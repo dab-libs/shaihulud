@@ -1,29 +1,36 @@
 package ru.dab.shaihulud.generator;
 
 public class GeneratorOptions {
-  private final String yamlTemplate;
-  private final String jsonTemplate;
-  private final String jsonSchema;
+  private final String yamlSpecification;
+  private final String jsonSpecification;
+  private final String schema;
+  private final String template;
   private final String outDirectory;
 
-  GeneratorOptions(String yamlTemplate, String jsonTemplate,
-                   String jsonSchema, String outDirectory) {
-    this.yamlTemplate = yamlTemplate;
-    this.jsonTemplate = jsonTemplate;
-    this.jsonSchema = jsonSchema;
+  GeneratorOptions(String yamlSpecification, String jsonSpecification,
+                   String schema, String template,
+                   String outDirectory) {
+    this.yamlSpecification = yamlSpecification;
+    this.jsonSpecification = jsonSpecification;
+    this.schema = schema;
+    this.template = template;
     this.outDirectory = outDirectory;
   }
 
-  public String getYamlTemplate() {
-    return yamlTemplate;
+  public String getYamlSpecification() {
+    return yamlSpecification;
   }
 
-  public String getJsonTemplate() {
-    return jsonTemplate;
+  public String getJsonSpecification() {
+    return jsonSpecification;
   }
 
-  public String getJsonSchema() {
-    return jsonSchema;
+  public String getSchema() {
+    return schema;
+  }
+
+  public String getTemplate() {
+    return template;
   }
 
   public String getOutDirectory() {

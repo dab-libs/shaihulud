@@ -4,11 +4,12 @@ import org.apache.commons.cli.*;
 
 public class CommandLineGeneratorOptionsBuilder {
 
-  public static final String HELP          = "help";
-  public static final String YAML_TEMPLATE = "yamlTemplate";
-  public static final String JSON_TEMPLATE = "jsonTemplate";
-  public static final String JSON_SCHEMA   = "jsonSchema";
-  public static final String OUT_DIRECTORY = "outDirectory";
+  public static final String HELP               = "help";
+  public static final String YAML_SPECIFICATION = "yamlSpecification";
+  public static final String JSON_SPECIFICATION = "jsonSpecification";
+  public static final String SCHEMA             = "schema";
+  public static final String TEMPLATE           = "template";
+  public static final String OUT_DIRECTORY      = "outDirectory";
 
   public static GeneratorOptions build(String[] commandLineArguments)
       throws WrongOptionsException, NeedHelpException {
@@ -17,36 +18,48 @@ public class CommandLineGeneratorOptionsBuilder {
     }
 
     Options options = createOptions();
-    CommandLineParser parser = new DefaultParser();
+    CommandLine commandLine = parseCommandLine(commandLineArguments, options);
+    if (commandLine.hasOption(HELP)) {
+      throw new NeedHelpException();
+    }
+
+    String yamlSpecification = commandLine.getOptionValue(YAML_SPECIFICATION);
+    String jsonSpecification = commandLine.getOptionValue(JSON_SPECIFICATION);
+
+    if (yamlSpecification == null && jsonSpecification == null) {
+      throw new WrongOptionsException(
+          "One of the options '" + YAML_SPECIFICATION + "' or '" +
+          JSON_SPECIFICATION + "' is required");
+    }
+
+    return new GeneratorOptions(
+        yamlSpecification, jsonSpecification,
+        commandLine.getOptionValue(SCHEMA),
+        commandLine.getOptionValue(TEMPLATE),
+        commandLine.getOptionValue(OUT_DIRECTORY));
+  }
+
+  private static CommandLine parseCommandLine(String[] commandLineArguments,
+                                              Options options)
+      throws WrongOptionsException {
+    CommandLine commandLine;
     try {
-      CommandLine commandLine = parser.parse(options, commandLineArguments);
-      if (commandLine.hasOption(HELP)) {
-        throw new NeedHelpException();
-      }
-
-      String yamlTemplate = commandLine.getOptionValue(YAML_TEMPLATE);
-      String jsonTemplate = commandLine.getOptionValue(JSON_TEMPLATE);
-      String jsonSchema = commandLine.getOptionValue(JSON_SCHEMA);
-      String outDirectory = commandLine.getOptionValue(OUT_DIRECTORY);
-
-      if (yamlTemplate == null && jsonTemplate == null) {
-        throw new WrongOptionsException(
-            "One of the options '" + YAML_TEMPLATE + "' or '" + JSON_TEMPLATE +
-            "' is required");
-      }
-
-      return new GeneratorOptions(yamlTemplate, jsonTemplate, jsonSchema,
-                                  outDirectory);
+      CommandLineParser parser = new DefaultParser();
+      commandLine = parser.parse(options, commandLineArguments);
     }
     catch (ParseException e) {
       throw new WrongOptionsException(e.getMessage(), e);
     }
+    return commandLine;
   }
 
-  public static void printHelp(String cmdLineSyntax) {
+  public static void printHelp() {
     Options options = createOptions();
     HelpFormatter helpFormatter = new HelpFormatter();
-    helpFormatter.printHelp(cmdLineSyntax, options);
+    helpFormatter.printHelp(
+        "java -jar shaihulud.jar (-json <PATH> | -yaml <PATH>) -sch <PATH>" +
+        " -t <PATH> -out <PATH>",
+        options);
   }
 
   private static Options createOptions() {
@@ -56,29 +69,40 @@ public class CommandLineGeneratorOptionsBuilder {
               .longOpt(HELP)
               .desc("print this message.")
               .build());
-    options.addOption(
+    OptionGroup specificationOptions = new OptionGroup();
+    specificationOptions.addOption(
         Option.builder("yaml")
-              .longOpt(YAML_TEMPLATE)
+              .longOpt(YAML_SPECIFICATION)
               .hasArg()
               .argName("PATH")
               .type(String.class)
               .desc("use a given PATH to read an YAML template file")
               .build());
-    options.addOption(
+    specificationOptions.addOption(
         Option.builder("json")
-              .longOpt(JSON_TEMPLATE)
+              .longOpt(JSON_SPECIFICATION)
               .hasArg()
               .argName("PATH")
               .type(String.class)
               .desc("use a given PATH to read an JSON template file")
               .build());
+    options.addOptionGroup(specificationOptions);
     options.addOption(
-        Option.builder("s")
-              .longOpt(JSON_SCHEMA)
+        Option.builder("sch")
+              .longOpt(SCHEMA)
               .hasArg()
               .argName("PATH")
               .type(String.class)
               .desc("use a given PATH to read a JSON-schema file")
+              .build());
+    options.addOption(
+        Option.builder("t")
+              .longOpt(TEMPLATE)
+              .hasArg()
+              .argName("PATH")
+              .type(String.class)
+              .required()
+              .desc("use a given PATH to read a template file")
               .build());
     options.addOption(
         Option.builder("out")
