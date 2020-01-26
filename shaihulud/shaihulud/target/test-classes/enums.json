@@ -1,9 +1,0 @@
-{
-  "enumerated": "one",
-  "nested": {
-    "enumerated": "one",
-    "nested": {
-      "enumerated": "one"
-    }
-  }
-}
