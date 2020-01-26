@@ -13,10 +13,10 @@ public class Generate {
     }
     catch (CommandLineGeneratorOptionsBuilder.WrongOptionsException e) {
       System.err.println(e.getMessage());
-      CommandLineGeneratorOptionsBuilder.printHelp(PROGRAM_NAME);
+      CommandLineGeneratorOptionsBuilder.printHelp();
     }
     catch (CommandLineGeneratorOptionsBuilder.NeedHelpException e) {
-      CommandLineGeneratorOptionsBuilder.printHelp(PROGRAM_NAME);
+      CommandLineGeneratorOptionsBuilder.printHelp();
     }
   }
 }
