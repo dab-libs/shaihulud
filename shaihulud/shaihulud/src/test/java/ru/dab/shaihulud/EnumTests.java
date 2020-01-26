@@ -35,25 +35,25 @@ class EnumTests {
           .builder()
           .withListener(new Listener(enumInstances))
           .build().performValidation(schema, json);
-      json.
+//      json.
     }
   }
 
   private Map<String, Object> mapJsonObjectToData(JSONObject object) {
     Map<String, Object> data = new HashMap<>();
     for (Map.Entry<String, Object> entry : object.toMap().entrySet()) {
-      if (object.g)
+//      if (object.g)
     }
     return Collections.unmodifiableMap(data);
   }
 
-  private List<Object> mapJsonArrayToData(JSONArray json) {
-    Map<String, Object> data = new HashMap<>();
-    for (Map.Entry<String, Object> entry : json.toMap().entrySet()) {
-      if (json.g)
-    }
-    return Collections.unmodifiableMap(data);
-  }
+//  private List<Object> mapJsonArrayToData(JSONArray json) {
+//    Map<String, Object> data = new HashMap<>();
+//    for (Map.Entry<String, Object> entry : json.toMap().entrySet()) {
+//      if (json.g)
+//    }
+//    return Collections.unmodifiableMap(data);
+//  }
 
   private static class Listener implements ValidationListener {
     private final Set<Integer> enumInstances;
