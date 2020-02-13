@@ -3,7 +3,6 @@ package ru.dab.shaihulud.generator;
 import org.apache.commons.cli.*;
 
 public class CommandLineGeneratorOptionsBuilder {
-
   public static final String HELP               = "help";
   public static final String YAML_SPECIFICATION = "yamlSpecification";
   public static final String JSON_SPECIFICATION = "jsonSpecification";
@@ -57,7 +56,7 @@ public class CommandLineGeneratorOptionsBuilder {
     Options options = createOptions();
     HelpFormatter helpFormatter = new HelpFormatter();
     helpFormatter.printHelp(
-        "java -jar shaihulud.jar (-json <PATH> | -yaml <PATH>) -sch <PATH>" +
+        "java -jar shaihulud.jar (-json <PATH> | -yaml <PATH>) -s <PATH>" +
         " -t <PATH> -out <PATH>",
         options);
   }
@@ -76,7 +75,7 @@ public class CommandLineGeneratorOptionsBuilder {
               .hasArg()
               .argName("PATH")
               .type(String.class)
-              .desc("use a given PATH to read an YAML template file")
+              .desc("use a given PATH to read an YAML specification file")
               .build());
     specificationOptions.addOption(
         Option.builder("json")
@@ -84,11 +83,11 @@ public class CommandLineGeneratorOptionsBuilder {
               .hasArg()
               .argName("PATH")
               .type(String.class)
-              .desc("use a given PATH to read an JSON template file")
+              .desc("use a given PATH to read a JSON specification file")
               .build());
     options.addOptionGroup(specificationOptions);
     options.addOption(
-        Option.builder("sch")
+        Option.builder("s")
               .longOpt(SCHEMA)
               .hasArg()
               .argName("PATH")
