@@ -8,9 +8,7 @@ import ru.dab.shaihulud.generator.CommandLineGeneratorOptionsBuilder.NeedHelpExc
 import ru.dab.shaihulud.generator.CommandLineGeneratorOptionsBuilder.WrongOptionsException;
 import ru.dab.shaihulud.generator.GeneratorOptions;
 import ru.dab.shaihulud.specification.JsonParser;
-import ru.dab.shaihulud.specification.Parser;
 import ru.dab.shaihulud.specification.ParserException;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.*;
 import java.util.Map;
@@ -28,14 +26,14 @@ public class Generate {
       if (schemaPath != null) {
         schemaStream = new FileInputStream(schemaPath);
       }
-      Parser parser;
+      JsonParser parser;
       InputStream specificationStream;
       if (jsonSpecificationPath != null) {
         specificationStream = new FileInputStream(jsonSpecificationPath);
         parser = new JsonParser();
       }
       else {
-        throw new NotImplementedException();
+        throw new RuntimeException();
       }
       Map<String, Object> specificationMap =
           parser.parse(specificationStream, schemaStream);
@@ -57,6 +55,9 @@ public class Generate {
       System.err.println(e.getMessage());
     }
     catch (ParserException e) {
+      System.err.println(e.getMessage());
+    }
+    catch (IOException e) {
       System.err.println(e.getMessage());
     }
   }

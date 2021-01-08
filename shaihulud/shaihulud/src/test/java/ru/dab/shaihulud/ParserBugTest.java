@@ -5,15 +5,9 @@ import org.everit.json.schema.loader.SchemaLoader;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.junit.jupiter.api.Test;
-import ru.dab.shaihulud.specification.JsonSpecificationParser;
-import ru.dab.shaihulud.specification.ParserException;
-import ru.dab.shaihulud.specification.SpecificationParser;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ParserBugTest {
   @Test

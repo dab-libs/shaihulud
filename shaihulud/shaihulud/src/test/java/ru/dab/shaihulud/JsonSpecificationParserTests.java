@@ -3,7 +3,7 @@ package ru.dab.shaihulud;
 import org.junit.jupiter.api.Test;
 import ru.dab.shaihulud.specification.JsonSpecificationParser;
 import ru.dab.shaihulud.specification.ParserException;
-import ru.dab.shaihulud.specification.SpecificationParser;
+import ru.dab.shaihulud.specification.Parser;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,7 +18,7 @@ public class JsonSpecificationParserTests {
              getClass().getResourceAsStream("/swagger-2.0-schema.json");
          InputStream specification =
              getClass().getResourceAsStream("/swagger-default.json")) {
-      SpecificationParser specificationParser = new JsonSpecificationParser();
+      Parser specificationParser = new JsonSpecificationParser();
       Map<String, Object> parsedSpecification = specificationParser.parse(specification, schema);
       assertEquals("2.0", parsedSpecification.get("swagger"));
     }

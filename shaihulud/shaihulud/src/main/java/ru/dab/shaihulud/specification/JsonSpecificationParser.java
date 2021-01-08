@@ -9,7 +9,7 @@ import org.json.JSONTokener;
 import java.io.InputStream;
 import java.util.Map;
 
-public class JsonSpecificationParser implements SpecificationParser {
+public class JsonSpecificationParser implements Parser {
   @Override
   public Map<String, Object> parse(InputStream specificationStream,
                                    InputStream schemaStream)
