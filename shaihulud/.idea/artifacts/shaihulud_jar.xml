@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="jar" build-on-make="true" name="shaihulud:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/shaihulud_jar</output-path>
+    <output-path>$PROJECT_DIR$/out/artifacts/</output-path>
     <root id="archive" name="shaihulud.jar">
       <element id="module-output" name="shaihulud" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/joda-time/joda-time/2.10.2/joda-time-2.10.2.jar" path-in-jar="/" />
