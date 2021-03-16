@@ -2,8 +2,9 @@ package ru.dab.shaihulud.generator;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.dab.shaihulud.specification.SpecificationFormat;
 
-public class GeneratorOptions {
+class GeneratorOptions {
   private final @NotNull  String              specification;
   private final @NotNull  SpecificationFormat specificationFormat;
   private final @Nullable String              schema;

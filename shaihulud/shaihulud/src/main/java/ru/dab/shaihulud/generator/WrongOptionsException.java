@@ -1,6 +1,6 @@
 package ru.dab.shaihulud.generator;
 
-public class WrongOptionsException extends Exception {
+class WrongOptionsException extends Exception {
   public WrongOptionsException(String message) {
     this(message, null);
   }

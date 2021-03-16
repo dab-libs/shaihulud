@@ -1,7 +1,8 @@
-package ru.dab.shaihulud;
+package ru.dab.shaihulud.generator;
 
 import org.junit.jupiter.api.Test;
 import ru.dab.shaihulud.generator.*;
+import ru.dab.shaihulud.specification.SpecificationFormat;
 
 import static org.junit.jupiter.api.Assertions.*;
 

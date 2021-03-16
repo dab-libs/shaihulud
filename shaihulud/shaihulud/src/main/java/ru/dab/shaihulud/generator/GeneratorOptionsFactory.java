@@ -2,8 +2,9 @@ package ru.dab.shaihulud.generator;
 
 import org.apache.commons.cli.*;
 import org.jetbrains.annotations.NotNull;
+import ru.dab.shaihulud.specification.SpecificationFormat;
 
-public class GeneratorOptionsFactory {
+class GeneratorOptionsFactory {
   public static final String HELP               = "help";
   public static final String YAML_SPECIFICATION = "yamlSpecification";
   public static final String JSON_SPECIFICATION = "jsonSpecification";
