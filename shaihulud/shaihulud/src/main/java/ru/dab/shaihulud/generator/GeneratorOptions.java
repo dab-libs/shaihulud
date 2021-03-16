@@ -1,39 +1,44 @@
 package ru.dab.shaihulud.generator;
 
-public class GeneratorOptions {
-  private final String yamlSpecification;
-  private final String jsonSpecification;
-  private final String schema;
-  private final String template;
-  private final String outDirectory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-  GeneratorOptions(String yamlSpecification, String jsonSpecification,
-                   String schema, String template,
-                   String outDirectory) {
-    this.yamlSpecification = yamlSpecification;
-    this.jsonSpecification = jsonSpecification;
+public class GeneratorOptions {
+  private final @NotNull  String              specification;
+  private final @NotNull  SpecificationFormat specificationFormat;
+  private final @Nullable String              schema;
+  private final @NotNull  String              template;
+  private final @Nullable String              outDirectory;
+
+  GeneratorOptions(
+      @NotNull String specification,
+      @NotNull SpecificationFormat specificationFormat,
+      @Nullable String schema, @NotNull String template,
+      @Nullable String outDirectory) {
+    this.specification = specification;
+    this.specificationFormat = specificationFormat;
     this.schema = schema;
     this.template = template;
     this.outDirectory = outDirectory;
   }
 
-  public String getYamlSpecification() {
-    return yamlSpecification;
+  public @NotNull String getSpecification() {
+    return specification;
   }
 
-  public String getJsonSpecification() {
-    return jsonSpecification;
+  public @NotNull SpecificationFormat getSpecificationFormat() {
+    return specificationFormat;
   }
 
-  public String getSchema() {
+  public @Nullable String getSchema() {
     return schema;
   }
 
-  public String getTemplate() {
+  public @NotNull String getTemplate() {
     return template;
   }
 
-  public String getOutDirectory() {
+  public @Nullable String getOutDirectory() {
     return outDirectory;
   }
 }

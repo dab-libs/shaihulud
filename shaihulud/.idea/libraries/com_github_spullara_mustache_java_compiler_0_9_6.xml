@@ -7,6 +7,8 @@
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/lib/compiler-0.9.6-javadoc.jar!/" />
     </JAVADOC>
-    <SOURCES />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.ideaLibSources/compiler-0.9.6-sources.jar!/" />
+    </SOURCES>
   </library>
 </component>

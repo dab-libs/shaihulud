@@ -1,12 +1,14 @@
 package ru.dab.shaihulud;
 
 import org.junit.jupiter.api.Test;
-import ru.dab.shaihulud.generator.CommandLineGeneratorOptionsBuilder;
+import ru.dab.shaihulud.generator.GeneratorOptionsFactory;
 import ru.dab.shaihulud.generator.GeneratorOptions;
+import ru.dab.shaihulud.generator.NeedHelpException;
+import ru.dab.shaihulud.generator.WrongOptionsException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CommandLineGeneratorOptionsBuilderTests {
+class GeneratorOptionsFactoryTests {
   @Test
   void testTrivial() {
     String[] args = new String[]{
@@ -17,16 +19,16 @@ class CommandLineGeneratorOptionsBuilderTests {
     };
     try {
       GeneratorOptions generatorOptions =
-          CommandLineGeneratorOptionsBuilder.build(args);
+          GeneratorOptionsFactory.build(args);
       assertEquals("spec.yaml", generatorOptions.getYamlSpecification());
       assertEquals("schema.json", generatorOptions.getSchema());
       assertEquals("template.mustache", generatorOptions.getTemplate());
       assertEquals("outDir", generatorOptions.getOutDirectory());
     }
-    catch (CommandLineGeneratorOptionsBuilder.WrongOptionsException e) {
+    catch (WrongOptionsException e) {
       fail(e.getMessage());
     }
-    catch (CommandLineGeneratorOptionsBuilder.NeedHelpException e) {
+    catch (NeedHelpException e) {
       fail(e.getMessage());
     }
   }
@@ -36,13 +38,13 @@ class CommandLineGeneratorOptionsBuilderTests {
     String[] args = new String[0];
     try {
       GeneratorOptions generatorOptions =
-          CommandLineGeneratorOptionsBuilder.build(args);
+          GeneratorOptionsFactory.build(args);
       fail();
     }
-    catch (CommandLineGeneratorOptionsBuilder.WrongOptionsException e) {
+    catch (WrongOptionsException e) {
       fail(e.getMessage());
     }
-    catch (CommandLineGeneratorOptionsBuilder.NeedHelpException e) {
+    catch (NeedHelpException e) {
     }
   }
 
@@ -75,12 +77,12 @@ class CommandLineGeneratorOptionsBuilderTests {
   private void parseWrongArguments(String[] args) {
     try {
       GeneratorOptions generatorOptions =
-          CommandLineGeneratorOptionsBuilder.build(args);
+          GeneratorOptionsFactory.build(args);
       fail();
     }
-    catch (CommandLineGeneratorOptionsBuilder.WrongOptionsException e) {
+    catch (WrongOptionsException e) {
     }
-    catch (CommandLineGeneratorOptionsBuilder.NeedHelpException e) {
+    catch (NeedHelpException e) {
       fail(e.getMessage());
     }
   }

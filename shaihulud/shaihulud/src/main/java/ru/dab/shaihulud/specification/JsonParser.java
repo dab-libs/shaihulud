@@ -1,8 +1,9 @@
 package ru.dab.shaihulud.specification;
 
 import org.everit.json.schema.Schema;
-import org.everit.json.schema.ValidationException;
 import org.everit.json.schema.loader.SchemaLoader;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -12,8 +13,9 @@ import java.util.Map;
 
 public class JsonParser implements Parser {
   @Override
-  public Map<String, Object> parse(InputStream specificationStream,
-                                   InputStream schemaStream)
+  public Map<String, Object> parse(
+      @NotNull InputStream specificationStream,
+      @Nullable InputStream schemaStream)
       throws ParserException {
     JSONObject jsonSpecification = parseJson(specificationStream);
     JSONObject jsonSchema = parseJson(schemaStream);
