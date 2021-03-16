@@ -1,11 +1,11 @@
 package ru.dab.shaihulud.generator;
 
-import com.github.mustachejava.DefaultMustacheFactory;
-import com.github.mustachejava.Mustache;
-import com.github.mustachejava.MustacheFactory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.dab.shaihulud.specification.*;
+import ru.dab.shaihulud.specification.Parser;
+import ru.dab.shaihulud.specification.ParserException;
+import ru.dab.shaihulud.specification.ParserFactory;
+import ru.dab.shaihulud.templating.TemplateProcessorFactory;
 
 import java.io.*;
 import java.util.Map;
@@ -22,18 +22,15 @@ class Generator {
         InputStream schemaStream = createSchemaStream();
         InputStream specificationStream = createSpecStream();
         StringReader templateReader = createTemplateReader();
-        Writer writer = createWriter()
+        Writer resultWriter = createResultWriter()
     ) {
-
       Parser parser = ParserFactory.create(options.getSpecificationFormat());
-      Map<String, Object> specificationMap =
+      Map<String, Object> specification =
           parser.parse(specificationStream, schemaStream);
 
-      MustacheFactory mf = new DefaultMustacheFactory();
-
-      Mustache mustache = mf.compile(templateReader, "main");
-      mustache.execute(writer, specificationMap);
-      writer.flush();
+      new TemplateProcessorFactory()
+          .create()
+          .process(specification, templateReader, resultWriter);
     }
     catch (ParserException | IOException e) {
       System.err.println(e.getMessage());
@@ -45,7 +42,7 @@ class Generator {
     return new StringReader(options.getTemplate());
   }
 
-  private @NotNull OutputStreamWriter createWriter() {
+  private @NotNull OutputStreamWriter createResultWriter() {
     return new OutputStreamWriter(System.out);
   }
 

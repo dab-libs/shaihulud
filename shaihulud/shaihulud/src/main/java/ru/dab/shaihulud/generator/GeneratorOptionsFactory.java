@@ -12,7 +12,8 @@ class GeneratorOptionsFactory {
   public static final String TEMPLATE           = "template";
   public static final String OUT_DIRECTORY      = "outDirectory";
 
-  public static @NotNull GeneratorOptions build(String[] commandLineArguments)
+  public static @NotNull GeneratorOptions build(
+      @NotNull String[] commandLineArguments)
       throws WrongOptionsException, NeedHelpException {
     if (commandLineArguments.length == 0) {
       throw new NeedHelpException();
@@ -31,7 +32,8 @@ class GeneratorOptionsFactory {
         commandLine.getOptionValue(OUT_DIRECTORY));
   }
 
-  private static @NotNull String getSpecification(CommandLine commandLine)
+  private static @NotNull String getSpecification(
+      @NotNull CommandLine commandLine)
       throws WrongOptionsException {
     String yamlSpecification = commandLine.getOptionValue(YAML_SPECIFICATION);
     String jsonSpecification = commandLine.getOptionValue(JSON_SPECIFICATION);
