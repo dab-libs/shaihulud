@@ -1,6 +1,6 @@
 package ru.dab.shaihulud.specification;
 
-enum SpecificationFormat {
+public enum SpecificationFormat {
   Json,
   Yaml
 }
