@@ -1,10 +1,7 @@
 package ru.dab.shaihulud;
 
 import org.junit.jupiter.api.Test;
-import ru.dab.shaihulud.generator.GeneratorOptionsFactory;
-import ru.dab.shaihulud.generator.GeneratorOptions;
-import ru.dab.shaihulud.generator.NeedHelpException;
-import ru.dab.shaihulud.generator.WrongOptionsException;
+import ru.dab.shaihulud.generator.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,7 +17,8 @@ class GeneratorOptionsFactoryTests {
     try {
       GeneratorOptions generatorOptions =
           GeneratorOptionsFactory.build(args);
-      assertEquals("spec.yaml", generatorOptions.getYamlSpecification());
+      assertEquals("spec.yaml", generatorOptions.getSpecification());
+      assertEquals(SpecificationFormat.Yaml, generatorOptions.getSpecificationFormat());
       assertEquals("schema.json", generatorOptions.getSchema());
       assertEquals("template.mustache", generatorOptions.getTemplate());
       assertEquals("outDir", generatorOptions.getOutDirectory());
