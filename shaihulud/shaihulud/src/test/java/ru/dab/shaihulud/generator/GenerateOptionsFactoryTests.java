@@ -1,12 +1,11 @@
 package ru.dab.shaihulud.generator;
 
 import org.junit.jupiter.api.Test;
-import ru.dab.shaihulud.generator.*;
 import ru.dab.shaihulud.specification.SpecificationFormat;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class GeneratorOptionsFactoryTests {
+class GenerateOptionsFactoryTests {
   @Test
   void testTrivial() {
     String[] args = new String[]{
@@ -16,13 +15,14 @@ class GeneratorOptionsFactoryTests {
         "-out", "outDir"
     };
     try {
-      GeneratorOptions generatorOptions =
-          GeneratorOptionsFactory.build(args);
-      assertEquals("spec.yaml", generatorOptions.getSpecification());
-      assertEquals(SpecificationFormat.Yaml, generatorOptions.getSpecificationFormat());
-      assertEquals("schema.json", generatorOptions.getSchema());
-      assertEquals("template.mustache", generatorOptions.getTemplate());
-      assertEquals("outDir", generatorOptions.getOutDirectory());
+      GenerateOptions generateOptions =
+          new GeneratorOptionsFactory().create(args);
+      assertEquals("spec.yaml", generateOptions.getSpecification());
+      assertEquals(SpecificationFormat.Yaml, generateOptions
+          .getSpecificationFormat());
+      assertEquals("schema.json", generateOptions.getSchema());
+      assertEquals("template.mustache", generateOptions.getTemplate());
+      assertEquals("outDir", generateOptions.getOutDirectory());
     }
     catch (WrongOptionsException e) {
       fail(e.getMessage());
@@ -36,8 +36,7 @@ class GeneratorOptionsFactoryTests {
   void testNeedHelp() {
     String[] args = new String[0];
     try {
-      GeneratorOptions generatorOptions =
-          GeneratorOptionsFactory.build(args);
+      new GeneratorOptionsFactory().create(args);
       fail();
     }
     catch (WrongOptionsException e) {
@@ -75,8 +74,7 @@ class GeneratorOptionsFactoryTests {
 
   private void parseWrongArguments(String[] args) {
     try {
-      GeneratorOptions generatorOptions =
-          GeneratorOptionsFactory.build(args);
+      new GeneratorOptionsFactory().create(args);
       fail();
     }
     catch (WrongOptionsException e) {

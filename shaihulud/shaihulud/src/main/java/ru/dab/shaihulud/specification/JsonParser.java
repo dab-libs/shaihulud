@@ -12,27 +12,42 @@ import java.io.InputStream;
 import java.util.Map;
 
 public class JsonParser implements Parser {
+  private final @Nullable InputStream schemaStream;
+  private @Nullable       JSONObject  schemaJson = null;
+
+  public JsonParser(@Nullable InputStream schemaStream) {
+    this.schemaStream = schemaStream;
+  }
+
   @Override
-  public Map<String, Object> parse(
-      @NotNull InputStream specificationStream,
-      @Nullable InputStream schemaStream)
+  public @NotNull Map<String, Object> parse(
+      @NotNull InputStream specificationStream)
       throws ParserException {
-    JSONObject jsonSpecification = parseJson(specificationStream);
-    JSONObject jsonSchema = parseJson(schemaStream);
+    JSONObject specification = parseJson(specificationStream);
+    if (schemaStream != null) {
+      validateAndSetDefaults(specification);
+    }
+    return specification.toMap();
+  }
+
+  private void validateAndSetDefaults(JSONObject specification)
+      throws ParserException {
+    if (schemaJson == null) {
+      schemaJson = parseJson(schemaStream);
+    }
     try {
       Schema schema = SchemaLoader
           .builder()
           .useDefaults(true)
-          .schemaJson(jsonSchema)
+          .schemaJson(schemaJson)
           .build()
           .load()
           .build();
-      schema.validate(jsonSpecification);
+      schema.validate(specification);
     }
     catch (RuntimeException e) {
-      throw new ParserException(e.getMessage(), e, specificationStream);
+      throw new ParserException(e.getMessage(), e);
     }
-    return null;
   }
 
   private JSONObject parseJson(InputStream inputStream) throws ParserException {
@@ -45,7 +60,7 @@ public class JsonParser implements Parser {
       }
     }
     catch (JSONException e) {
-      throw new ParserException(e.getMessage(), e, inputStream);
+      throw new ParserException(e.getMessage(), e);
     }
   }
 

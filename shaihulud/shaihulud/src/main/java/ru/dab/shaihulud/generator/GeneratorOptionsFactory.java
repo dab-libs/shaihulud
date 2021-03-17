@@ -12,7 +12,7 @@ class GeneratorOptionsFactory {
   public static final String TEMPLATE           = "template";
   public static final String OUT_DIRECTORY      = "outDirectory";
 
-  public static @NotNull GeneratorOptions build(
+  public @NotNull GenerateOptions create(
       @NotNull String[] commandLineArguments)
       throws WrongOptionsException, NeedHelpException {
     if (commandLineArguments.length == 0) {
@@ -25,14 +25,14 @@ class GeneratorOptionsFactory {
       throw new NeedHelpException();
     }
 
-    return new GeneratorOptions(
+    return new GenerateOptions(
         getSpecification(commandLine), getSpecificationFormat(commandLine),
         commandLine.getOptionValue(SCHEMA),
         commandLine.getOptionValue(TEMPLATE),
         commandLine.getOptionValue(OUT_DIRECTORY));
   }
 
-  private static @NotNull String getSpecification(
+  private @NotNull String getSpecification(
       @NotNull CommandLine commandLine)
       throws WrongOptionsException {
     String yamlSpecification = commandLine.getOptionValue(YAML_SPECIFICATION);
@@ -51,7 +51,7 @@ class GeneratorOptionsFactory {
     }
   }
 
-  private static @NotNull SpecificationFormat getSpecificationFormat(
+  private @NotNull SpecificationFormat getSpecificationFormat(
       @NotNull CommandLine commandLine)
       throws WrongOptionsException {
     String yamlSpecification = commandLine.getOptionValue(YAML_SPECIFICATION);
@@ -70,7 +70,7 @@ class GeneratorOptionsFactory {
     }
   }
 
-  private static @NotNull CommandLine parseCommandLine(
+  private @NotNull CommandLine parseCommandLine(
       @NotNull String[] commandLineArguments, @NotNull Options options)
       throws WrongOptionsException {
     CommandLine commandLine;
@@ -84,7 +84,7 @@ class GeneratorOptionsFactory {
     return commandLine;
   }
 
-  public static void printHelp() {
+  public void printHelp() {
     Options options = createOptions();
     HelpFormatter helpFormatter = new HelpFormatter();
     helpFormatter.printHelp(
@@ -93,7 +93,7 @@ class GeneratorOptionsFactory {
         options);
   }
 
-  private static Options createOptions() {
+  private Options createOptions() {
     Options options = new Options();
     options.addOption(
         Option.builder("h")

@@ -1,65 +1,31 @@
 package ru.dab.shaihulud.generator;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import ru.dab.shaihulud.specification.Parser;
 import ru.dab.shaihulud.specification.ParserException;
-import ru.dab.shaihulud.specification.ParserFactory;
-import ru.dab.shaihulud.templating.TemplateProcessorFactory;
+import ru.dab.shaihulud.templating.TemplateProcessor;
 
 import java.io.*;
 import java.util.Map;
 
 class Generator {
-  private final @NotNull GeneratorOptions options;
+  private final @NotNull Parser            specificationParser;
+  private final @NotNull TemplateProcessor templateProcessor;
 
-  public Generator(@NotNull GeneratorOptions options) {
-    this.options = options;
+  public Generator(
+      @NotNull Parser specificationParser,
+      @NotNull TemplateProcessor templateProcessor) {
+    this.specificationParser = specificationParser;
+    this.templateProcessor = templateProcessor;
   }
 
-  public void generate() {
-    try (
-        InputStream schemaStream = createSchemaStream();
-        InputStream specificationStream = createSpecStream();
-        StringReader templateReader = createTemplateReader();
-        Writer resultWriter = createResultWriter()
-    ) {
-      Parser parser = ParserFactory.create(options.getSpecificationFormat());
-      Map<String, Object> specification =
-          parser.parse(specificationStream, schemaStream);
-
-      new TemplateProcessorFactory()
-          .create()
-          .process(specification, templateReader, resultWriter);
-    }
-    catch (ParserException | IOException e) {
-      System.err.println(e.getMessage());
-    }
+  public void generate(
+      @NotNull InputStream specificationStream,
+      @NotNull Reader templateReader, @NotNull Writer resultWriter)
+      throws ParserException {
+    Map<String, Object> specification =
+        specificationParser.parse(specificationStream);
+    templateProcessor
+        .process(specification, templateReader, resultWriter);
   }
-
-  @NotNull
-  private StringReader createTemplateReader() {
-    return new StringReader(options.getTemplate());
-  }
-
-  private @NotNull OutputStreamWriter createResultWriter() {
-    return new OutputStreamWriter(System.out);
-  }
-
-  private @NotNull InputStream createSpecStream()
-      throws FileNotFoundException {
-    String specificationPath = options.getSpecification();
-    return new FileInputStream(specificationPath);
-  }
-
-  private @Nullable InputStream createSchemaStream()
-      throws FileNotFoundException {
-    InputStream schemaStream = null;
-    String schemaPath = options.getSchema();
-    if (schemaPath != null) {
-      schemaStream = new FileInputStream(schemaPath);
-    }
-    return schemaStream;
-  }
-
 }

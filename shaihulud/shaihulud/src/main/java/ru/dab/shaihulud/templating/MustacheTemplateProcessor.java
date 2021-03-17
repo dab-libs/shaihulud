@@ -5,14 +5,14 @@ import com.github.mustachejava.Mustache;
 import com.github.mustachejava.MustacheFactory;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.StringReader;
+import java.io.Reader;
 import java.io.Writer;
 import java.util.Map;
 
 public class MustacheTemplateProcessor implements TemplateProcessor {
   @Override
   public void process(@NotNull Map<String, Object> specification,
-                      @NotNull StringReader templateReader,
+                      @NotNull Reader templateReader,
                       @NotNull Writer writer) {
     MustacheFactory mf = new DefaultMustacheFactory();
     Mustache mustache = mf.compile(templateReader, "main");

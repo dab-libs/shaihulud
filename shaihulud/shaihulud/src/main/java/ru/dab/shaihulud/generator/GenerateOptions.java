@@ -4,14 +4,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.dab.shaihulud.specification.SpecificationFormat;
 
-class GeneratorOptions {
+class GenerateOptions {
   private final @NotNull  String              specification;
   private final @NotNull  SpecificationFormat specificationFormat;
   private final @Nullable String              schema;
   private final @NotNull  String              template;
   private final @Nullable String              outDirectory;
 
-  GeneratorOptions(
+  GenerateOptions(
       @NotNull String specification,
       @NotNull SpecificationFormat specificationFormat,
       @Nullable String schema, @NotNull String template,
