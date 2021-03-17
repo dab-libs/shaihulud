@@ -1,7 +1,7 @@
 package ru.dab.shaihulud.generator;
 
 import org.jetbrains.annotations.NotNull;
-import ru.dab.shaihulud.specification.Parser;
+import ru.dab.shaihulud.specification.SpecificationParser;
 import ru.dab.shaihulud.specification.ParserException;
 import ru.dab.shaihulud.templating.TemplateProcessor;
 
@@ -9,11 +9,11 @@ import java.io.*;
 import java.util.Map;
 
 class Generator {
-  private final @NotNull Parser            specificationParser;
-  private final @NotNull TemplateProcessor templateProcessor;
+  private final @NotNull SpecificationParser specificationParser;
+  private final @NotNull TemplateProcessor   templateProcessor;
 
   public Generator(
-      @NotNull Parser specificationParser,
+      @NotNull SpecificationParser specificationParser,
       @NotNull TemplateProcessor templateProcessor) {
     this.specificationParser = specificationParser;
     this.templateProcessor = templateProcessor;

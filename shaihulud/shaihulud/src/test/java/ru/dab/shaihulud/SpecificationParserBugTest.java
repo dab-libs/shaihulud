@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class ParserBugTest {
+public class SpecificationParserBugTest {
   @Test
   public void testTrivial() throws IOException {
     try (InputStream schemaStream =

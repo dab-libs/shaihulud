@@ -7,15 +7,16 @@ import org.jetbrains.annotations.Nullable;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+import org.yaml.snakeyaml.Yaml;
 
 import java.io.InputStream;
 import java.util.Map;
 
-public class JsonParser implements Parser {
+public class YamlSpecificationParser implements SpecificationParser {
   private final @Nullable InputStream schemaStream;
   private @Nullable       JSONObject  schemaJson = null;
 
-  public JsonParser(@Nullable InputStream schemaStream) {
+  public YamlSpecificationParser(@Nullable InputStream schemaStream) {
     this.schemaStream = schemaStream;
   }
 
@@ -23,7 +24,7 @@ public class JsonParser implements Parser {
   public @NotNull Map<String, Object> parse(
       @NotNull InputStream specificationStream)
       throws ParserException {
-    JSONObject specification = parseJson(specificationStream);
+    JSONObject specification = parseYaml(specificationStream);
     if (schemaStream != null) {
       validateAndSetDefaults(specification);
     }
@@ -62,6 +63,12 @@ public class JsonParser implements Parser {
     catch (JSONException e) {
       throw new ParserException(e.getMessage(), e);
     }
+  }
+
+  private JSONObject parseYaml(InputStream inputStream) {
+    Yaml yaml = new Yaml();
+    Map<String, Object> objectMap = yaml.load(inputStream);
+    return new JSONObject(objectMap);
   }
 
 }

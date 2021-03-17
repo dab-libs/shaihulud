@@ -22,10 +22,11 @@ public class Generate {
         Reader template = new FileReader(options.getTemplate());
         Writer result = new MemoryResultWriter()
     ) {
-      Parser parser = createParser(options, schemaStream);
+      SpecificationParser
+          specificationParser = createParser(options, schemaStream);
       MustacheTemplateProcessor templateProcessor =
           new MustacheTemplateProcessor();
-      new Generator(parser, templateProcessor)
+      new Generator(specificationParser, templateProcessor)
           .generate(specification, template, result);
     }
     catch (ParserException | IOException e) {
@@ -48,12 +49,13 @@ public class Generate {
     return null;
   }
 
-  private static @NotNull Parser createParser(
+  private static @NotNull SpecificationParser createParser(
       @NotNull GenerateOptions options, @Nullable InputStream schemaStream) {
     switch (options.getSpecificationFormat()) {
       case Json:
-        return new JsonParser(schemaStream);
+        return new JsonSpecificationParser(schemaStream);
       case Yaml:
+        return new YamlSpecificationParser(schemaStream);
       default:
         throw new RuntimeException();
     }
