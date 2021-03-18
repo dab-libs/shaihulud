@@ -1,4 +1,4 @@
-package ru.dab.shaihulud.templating;
+package ru.dab.shaihulud.generator;
 
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
@@ -11,11 +11,11 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MustacheTemplateProcessor implements TemplateProcessor {
+public class MustacheGenerator implements Generator {
   @Override
-  public void process(@NotNull Map<String, Object> specification,
-                      @NotNull Reader templateReader,
-                      @NotNull Writer writer) {
+  public void generate(@NotNull Map<String, Object> specification,
+                       @NotNull Reader templateReader,
+                       @NotNull Writer writer) {
     MustacheFactory mf = new DefaultMustacheFactory();
     Mustache mustache = mf.compile(templateReader, "main");
     Map<String, Object> specificationCopy = new HashMap<>(specification);

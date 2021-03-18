@@ -2,9 +2,9 @@ package ru.dab.shaihulud.cli;
 
 import org.apache.commons.cli.*;
 import org.jetbrains.annotations.NotNull;
-import ru.dab.shaihulud.specification.SpecificationFormat;
+import ru.dab.shaihulud.specification.SpecificationParserType;
 
-class GeneratorOptionsFactory {
+class ProgramOptionsFactory {
   public static final String HELP               = "help";
   public static final String YAML_SPECIFICATION = "yamlSpecification";
   public static final String JSON_SPECIFICATION = "jsonSpecification";
@@ -12,7 +12,7 @@ class GeneratorOptionsFactory {
   public static final String TEMPLATE           = "template";
   public static final String OUT_DIRECTORY      = "outDirectory";
 
-  public @NotNull GenerateOptions create(
+  public @NotNull ProgramOptions create(
       @NotNull String[] commandLineArguments)
       throws WrongOptionsException, NeedHelpException {
     if (commandLineArguments.length == 0) {
@@ -25,7 +25,7 @@ class GeneratorOptionsFactory {
       throw new NeedHelpException();
     }
 
-    return new GenerateOptions(
+    return new ProgramOptions(
         getSpecification(commandLine), getSpecificationFormat(commandLine),
         commandLine.getOptionValue(SCHEMA),
         commandLine.getOptionValue(TEMPLATE),
@@ -51,7 +51,7 @@ class GeneratorOptionsFactory {
     }
   }
 
-  private @NotNull SpecificationFormat getSpecificationFormat(
+  private @NotNull SpecificationParserType getSpecificationFormat(
       @NotNull CommandLine commandLine)
       throws WrongOptionsException {
     String yamlSpecification = commandLine.getOptionValue(YAML_SPECIFICATION);
@@ -63,10 +63,10 @@ class GeneratorOptionsFactory {
           JSON_SPECIFICATION + "' is required");
     }
     else if (yamlSpecification == null) {
-      return SpecificationFormat.Json;
+      return SpecificationParserType.Json;
     }
     else {
-      return SpecificationFormat.Yaml;
+      return SpecificationParserType.Yaml;
     }
   }
 

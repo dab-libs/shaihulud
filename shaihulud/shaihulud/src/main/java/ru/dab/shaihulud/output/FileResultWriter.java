@@ -1,4 +1,4 @@
-package ru.dab.shaihulud.result;
+package ru.dab.shaihulud.output;
 
 import org.jetbrains.annotations.NotNull;
 

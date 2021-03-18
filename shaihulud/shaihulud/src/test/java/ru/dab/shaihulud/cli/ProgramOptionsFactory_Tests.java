@@ -1,11 +1,11 @@
 package ru.dab.shaihulud.cli;
 
 import org.junit.jupiter.api.Test;
-import ru.dab.shaihulud.specification.SpecificationFormat;
+import ru.dab.shaihulud.specification.SpecificationParserType;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class GenerateOptionsFactoryTests {
+class ProgramOptionsFactory_Tests {
   @Test
   void testTrivial() {
     String[] args = new String[]{
@@ -15,14 +15,14 @@ class GenerateOptionsFactoryTests {
         "-out", "outDir"
     };
     try {
-      GenerateOptions generateOptions =
-          new GeneratorOptionsFactory().create(args);
-      assertEquals("spec.yaml", generateOptions.getSpecification());
-      assertEquals(SpecificationFormat.Yaml, generateOptions
-          .getSpecificationFormat());
-      assertEquals("schema.json", generateOptions.getSchema());
-      assertEquals("template.mustache", generateOptions.getTemplate());
-      assertEquals("outDir", generateOptions.getOutDirectory());
+      ProgramOptions programOptions =
+          new ProgramOptionsFactory().create(args);
+      assertEquals("spec.yaml", programOptions.getSpecification());
+      assertEquals(SpecificationParserType.Yaml, programOptions
+          .getSpecificationParserType());
+      assertEquals("schema.json", programOptions.getSchema());
+      assertEquals("template.mustache", programOptions.getTemplate());
+      assertEquals("outDir", programOptions.getOutDirectory());
     }
     catch (WrongOptionsException | NeedHelpException e) {
       fail(e.getMessage());
@@ -33,7 +33,7 @@ class GenerateOptionsFactoryTests {
   void testNeedHelp() {
     String[] args = new String[0];
     try {
-      new GeneratorOptionsFactory().create(args);
+      new ProgramOptionsFactory().create(args);
       fail();
     }
     catch (WrongOptionsException e) {
@@ -71,7 +71,7 @@ class GenerateOptionsFactoryTests {
 
   private void parseWrongArguments(String[] args) {
     try {
-      new GeneratorOptionsFactory().create(args);
+      new ProgramOptionsFactory().create(args);
       fail();
     }
     catch (WrongOptionsException e) {
