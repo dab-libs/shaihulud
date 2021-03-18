@@ -1,4 +1,4 @@
-package ru.dab.shaihulud.generator;
+package ru.dab.shaihulud.cli;
 
 import org.junit.jupiter.api.Test;
 import ru.dab.shaihulud.specification.SpecificationFormat;
@@ -24,10 +24,7 @@ class GenerateOptionsFactoryTests {
       assertEquals("template.mustache", generateOptions.getTemplate());
       assertEquals("outDir", generateOptions.getOutDirectory());
     }
-    catch (WrongOptionsException e) {
-      fail(e.getMessage());
-    }
-    catch (NeedHelpException e) {
+    catch (WrongOptionsException | NeedHelpException e) {
       fail(e.getMessage());
     }
   }

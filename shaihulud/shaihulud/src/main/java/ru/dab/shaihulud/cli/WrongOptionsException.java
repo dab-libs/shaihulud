@@ -1,4 +1,4 @@
-package ru.dab.shaihulud.generator;
+package ru.dab.shaihulud.cli;
 
 class WrongOptionsException extends Exception {
   public WrongOptionsException(String message) {

@@ -1,4 +1,4 @@
-package ru.dab.shaihulud.generator;
+package ru.dab.shaihulud.cli;
 
 import org.junit.jupiter.api.Test;
 
