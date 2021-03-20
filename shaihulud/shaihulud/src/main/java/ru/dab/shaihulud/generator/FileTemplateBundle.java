@@ -1,6 +1,5 @@
 package ru.dab.shaihulud.generator;
 
-import com.github.mustachejava.MustacheException;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
@@ -25,33 +24,43 @@ public class FileTemplateBundle implements TemplateBundle {
   }
 
   @Override
-  public @NotNull Reader getTemplate(@NotNull String name)
-      throws IOException {
+  public @NotNull Reader getTemplate(@NotNull String name) throws IOException {
     String resourceName =
         name.replace('.', File.separatorChar) + '.' + extension;
-    InputStream is = null;
-    File file = new File(root, resourceName);
-    if (file.exists() && file.isFile()) {
-      File checkRoot = root.getCanonicalFile();
-      File parent = file.getCanonicalFile();
-      while ((parent = parent.getParentFile()) != null) {
-        if (parent.equals(checkRoot)) {
-          break;
-        }
-      }
-      if (parent == null) {
-        throw new IOException(
-            "File not under root: " + checkRoot.getAbsolutePath());
-      }
-      is = new FileInputStream(file);
-    }
-    if (is != null) {
-      return new BufferedReader(
-          new InputStreamReader(is, StandardCharsets.UTF_8));
-    }
-    else {
+
+    File templateFile = new File(root, resourceName);
+
+    validateFileExists(templateFile);
+    validateFileUnderFoot(templateFile);
+
+    return new BufferedReader(
+        new InputStreamReader(
+            new FileInputStream(templateFile),
+            StandardCharsets.UTF_8));
+  }
+
+  private void validateFileExists(File templateFile) throws IOException {
+    if (!templateFile.exists()) {
       throw new IOException(
-          file.getAbsolutePath() + " is not a file");
+          "'" + templateFile.getAbsolutePath() + "' is not found");
+    }
+    if (!templateFile.isFile()) {
+      throw new IOException(
+          "'" + templateFile.getAbsolutePath() + "' is not a file");
+    }
+  }
+
+  private void validateFileUnderFoot(File templateFile) throws IOException {
+    File checkRoot = root.getCanonicalFile();
+    File parent = templateFile.getCanonicalFile();
+    while ((parent = parent.getParentFile()) != null) {
+      if (parent.equals(checkRoot)) {
+        break;
+      }
+    }
+    if (parent == null) {
+      throw new IOException(
+          "File not under root: " + checkRoot.getAbsolutePath());
     }
   }
 }
