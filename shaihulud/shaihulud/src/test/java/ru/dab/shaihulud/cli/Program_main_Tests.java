@@ -6,20 +6,22 @@ public class Program_main_Tests {
   @Test
   void generateFromJson() {
     Program.main(new String[]{
-        "-json", "src/test/resources/swagger-default.json",
-        "-sch", "src/test/resources/swagger-2.0-schema.json",
-        "-t", "src/test/resources/default.mustache",
-        "-out", "outDir"
+        "-j", "src/test/resources/swagger-default.json",
+        "-s", "src/test/resources/swagger-2.0-schema.json",
+        "-r", "src/test/resources",
+        "-t", "default",
+        "-o", "out"
     });
   }
 
   @Test
   void generateFromYaml() {
     Program.main(new String[]{
-        "-yaml", "src/test/resources/swagger-default.yaml",
-        "-sch", "src/test/resources/swagger-2.0-schema.json",
-        "-t", "src/test/resources/default.mustache",
-        "-out", "outDir"
+        "-y", "src/test/resources/swagger-default.yaml",
+        "-s", "src/test/resources/swagger-2.0-schema.json",
+        "-r", "src/test/resources",
+        "-t", "default",
+        "-o", "out"
     });
   }
 }

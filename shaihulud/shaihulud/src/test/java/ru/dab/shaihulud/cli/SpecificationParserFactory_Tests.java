@@ -4,8 +4,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import ru.dab.shaihulud.specification.*;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 
 import static org.junit.jupiter.api.Assertions.*;

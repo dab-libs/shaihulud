@@ -2,9 +2,6 @@ package ru.dab.shaihulud.cli;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import ru.dab.shaihulud.generator.GeneratorFactory;
-import ru.dab.shaihulud.specification.SchemaFactory;
-import ru.dab.shaihulud.specification.SchemaOptions;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

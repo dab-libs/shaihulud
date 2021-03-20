@@ -2,32 +2,30 @@ package ru.dab.shaihulud.cli;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.dab.shaihulud.generator.GeneratorOptions;
-import ru.dab.shaihulud.output.OutputOptions;
-import ru.dab.shaihulud.specification.SchemaOptions;
-import ru.dab.shaihulud.specification.SpecificationParserOptions;
 import ru.dab.shaihulud.specification.SpecificationParserType;
-import ru.dab.shaihulud.specification.SpecificationOptions;
-import ru.dab.shaihulud.generator.TemplateOptions;
 
 class ProgramOptions
     implements SchemaOptions, SpecificationParserOptions, SpecificationOptions,
-               TemplateOptions, OutputOptions, GeneratorOptions {
+               TemplateBundleOptions, OutputOptions {
   private final @NotNull  String                  specification;
   private final @NotNull  SpecificationParserType specificationParserType;
   private final @Nullable String                  schema;
-  private final @NotNull  String                  template;
+  private final @NotNull  String                  templateRoot;
+  private final @NotNull  String                  mainTemplate;
   private final @Nullable String                  outDirectory;
 
   ProgramOptions(
       @NotNull String specification,
       @NotNull SpecificationParserType specificationParserType,
-      @Nullable String schema, @NotNull String template,
+      @Nullable String schema,
+      @NotNull String templateRoot,
+      @NotNull String mainTemplate,
       @Nullable String outDirectory) {
     this.specification = specification;
     this.specificationParserType = specificationParserType;
     this.schema = schema;
-    this.template = template;
+    this.templateRoot = templateRoot;
+    this.mainTemplate = mainTemplate;
     this.outDirectory = outDirectory;
   }
 
@@ -47,8 +45,13 @@ class ProgramOptions
   }
 
   @Override
-  public @NotNull String getTemplate() {
-    return template;
+  public @NotNull String getRoot() {
+    return templateRoot;
+  }
+
+  @Override
+  public @NotNull String getMain() {
+    return mainTemplate;
   }
 
   @Override

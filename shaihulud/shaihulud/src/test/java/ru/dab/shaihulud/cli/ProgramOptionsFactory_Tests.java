@@ -9,9 +9,10 @@ class ProgramOptionsFactory_Tests {
   @Test
   void testTrivial() {
     String[] args = new String[]{
-        "-yaml", "spec.yaml",
-        "-sch", "schema.json",
-        "-t", "template.mustache",
+        "-y", "spec.yaml",
+        "-s", "schema.json",
+        "-r", "templates",
+        "-t", "template",
         "-out", "outDir"
     };
     try {
@@ -21,11 +22,12 @@ class ProgramOptionsFactory_Tests {
       assertEquals(SpecificationParserType.Yaml, programOptions
           .getSpecificationParserType());
       assertEquals("schema.json", programOptions.getSchema());
-      assertEquals("template.mustache", programOptions.getTemplate());
+      assertEquals("templates", programOptions.getRoot());
+      assertEquals("template", programOptions.getMain());
       assertEquals("outDir", programOptions.getOutDirectory());
     }
     catch (WrongOptionsException | NeedHelpException e) {
-      fail(e.getMessage());
+      fail(e.getMessage(), e);
     }
   }
 
@@ -37,9 +39,10 @@ class ProgramOptionsFactory_Tests {
       fail();
     }
     catch (WrongOptionsException e) {
-      fail(e.getMessage());
+      fail(e.getMessage(), e);
     }
     catch (NeedHelpException e) {
+      assertTrue(true);
     }
   }
 
@@ -53,10 +56,11 @@ class ProgramOptionsFactory_Tests {
     parseWrongArguments(args);
   }
 
+  // TODO: Сделать проверку обязательных параметров
   @Test
   void testYamlJsonRequired() {
     String[] args = new String[]{
-        "-t", "template.mustache"
+        "-t", "template"
     };
     parseWrongArguments(args);
   }

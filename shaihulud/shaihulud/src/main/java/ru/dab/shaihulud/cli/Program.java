@@ -1,10 +1,9 @@
 package ru.dab.shaihulud.cli;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.dab.shaihulud.generator.Generator;
-import ru.dab.shaihulud.generator.GeneratorFactory;
-import ru.dab.shaihulud.generator.TemplateFactory;
-import ru.dab.shaihulud.output.OutputFactory;
+import ru.dab.shaihulud.generator.TemplateBundle;
 import ru.dab.shaihulud.specification.*;
 
 import java.io.IOException;
@@ -22,12 +21,12 @@ public class Program {
     try (
         InputStream schema = new SchemaFactory(options).create();
         InputStream specification = new SpecificationFactory(options).create();
-        Reader template = new TemplateFactory(options).create();
         Writer result = new OutputFactory(options).create()
     ) {
       SpecificationParser parser = new SpecificationParserFactory(options)
           .create(schema);
-      Generator generator = new GeneratorFactory(options).create();
+      TemplateBundle template = new TemplateBundleFactory(options).create();
+      Generator generator = new GeneratorFactory().create();
 
       generator.generate(parser.parse(specification), template, result);
     }

@@ -1,6 +1,7 @@
-package ru.dab.shaihulud.output;
+package ru.dab.shaihulud.cli;
 
 import org.jetbrains.annotations.NotNull;
+import ru.dab.shaihulud.output.MemoryResultWriter;
 
 import java.io.Writer;
 

@@ -1,4 +1,4 @@
-package ru.dab.shaihulud.output;
+package ru.dab.shaihulud.cli;
 
 import org.jetbrains.annotations.Nullable;
 

@@ -5,12 +5,13 @@ import org.jetbrains.annotations.NotNull;
 import ru.dab.shaihulud.specification.SpecificationParserType;
 
 class ProgramOptionsFactory {
-  public static final String HELP               = "help";
-  public static final String YAML_SPECIFICATION = "yamlSpecification";
-  public static final String JSON_SPECIFICATION = "jsonSpecification";
-  public static final String SCHEMA             = "schema";
-  public static final String TEMPLATE           = "template";
-  public static final String OUT_DIRECTORY      = "outDirectory";
+  public static final String HELP   = "help";
+  public static final String YAML   = "yaml";
+  public static final String JSON   = "json";
+  public static final String SCHEMA = "schema";
+  public static final String ROOT   = "root";
+  public static final String MAIN   = "main";
+  public static final String OUT    = "out";
 
   public @NotNull ProgramOptions create(
       @NotNull String[] commandLineArguments)
@@ -28,20 +29,21 @@ class ProgramOptionsFactory {
     return new ProgramOptions(
         getSpecification(commandLine), getSpecificationFormat(commandLine),
         commandLine.getOptionValue(SCHEMA),
-        commandLine.getOptionValue(TEMPLATE),
-        commandLine.getOptionValue(OUT_DIRECTORY));
+        commandLine.getOptionValue(ROOT),
+        commandLine.getOptionValue(MAIN),
+        commandLine.getOptionValue(OUT));
   }
 
   private @NotNull String getSpecification(
       @NotNull CommandLine commandLine)
       throws WrongOptionsException {
-    String yamlSpecification = commandLine.getOptionValue(YAML_SPECIFICATION);
-    String jsonSpecification = commandLine.getOptionValue(JSON_SPECIFICATION);
+    String yamlSpecification = commandLine.getOptionValue(YAML);
+    String jsonSpecification = commandLine.getOptionValue(JSON);
 
     if (yamlSpecification == null && jsonSpecification == null) {
       throw new WrongOptionsException(
-          "One of the options '" + YAML_SPECIFICATION + "' or '" +
-          JSON_SPECIFICATION + "' is required");
+          "One of the options '" + YAML + "' or '" +
+          JSON + "' is required");
     }
     else if (yamlSpecification == null) {
       return jsonSpecification;
@@ -54,13 +56,13 @@ class ProgramOptionsFactory {
   private @NotNull SpecificationParserType getSpecificationFormat(
       @NotNull CommandLine commandLine)
       throws WrongOptionsException {
-    String yamlSpecification = commandLine.getOptionValue(YAML_SPECIFICATION);
-    String jsonSpecification = commandLine.getOptionValue(JSON_SPECIFICATION);
+    String yamlSpecification = commandLine.getOptionValue(YAML);
+    String jsonSpecification = commandLine.getOptionValue(JSON);
 
     if (yamlSpecification == null && jsonSpecification == null) {
       throw new WrongOptionsException(
-          "One of the options '" + YAML_SPECIFICATION + "' or '" +
-          JSON_SPECIFICATION + "' is required");
+          "One of the options '" + YAML + "' or '" +
+          JSON + "' is required");
     }
     else if (yamlSpecification == null) {
       return SpecificationParserType.Json;
@@ -88,8 +90,8 @@ class ProgramOptionsFactory {
     Options options = createOptions();
     HelpFormatter helpFormatter = new HelpFormatter();
     helpFormatter.printHelp(
-        "java -jar shaihulud.jar [-json <PATH> | -yaml <PATH>] -s <PATH>" +
-        " -t <PATH> [-out <PATH>]",
+        "java -jar shaihulud.jar [-s <PATH>] (-j <PATH> | -y <PATH>)" +
+        "          -r <DIR> -t <NAME> [-out <DIR>]",
         options);
   }
 
@@ -100,28 +102,29 @@ class ProgramOptionsFactory {
               .longOpt(HELP)
               .desc("print this message.")
               .build());
-    options.addOptionGroup(
-        new OptionGroup()
-            .addOption(
-                Option.builder("yaml")
-                      .longOpt(YAML_SPECIFICATION)
-                      .hasArg()
-                      .argName("PATH")
-                      .type(String.class)
-                      .desc(
-                          "use a given PATH to read an " +
-                          "YAML specification file")
-                      .build())
-            .addOption(
-                Option.builder("json")
-                      .longOpt(JSON_SPECIFICATION)
-                      .hasArg()
-                      .argName("PATH")
-                      .type(String.class)
-                      .desc(
-                          "use a given PATH to read a JSON" +
-                          " specification file")
-                      .build()));
+    OptionGroup spec = new OptionGroup()
+        .addOption(
+            Option.builder("y")
+                  .longOpt(YAML)
+                  .hasArg()
+                  .argName("PATH")
+                  .type(String.class)
+                  .desc(
+                      "use a given PATH as a path to read an " +
+                      "YAML specification file")
+                  .build())
+        .addOption(
+            Option.builder("j")
+                  .longOpt(JSON)
+                  .hasArg()
+                  .argName("PATH")
+                  .type(String.class)
+                  .desc(
+                      "use a given PATH as a path to read a JSON" +
+                      " specification file")
+                  .build());
+    spec.setRequired(true);
+    options.addOptionGroup(spec);
     options.addOption(
         Option.builder("s")
               .longOpt(SCHEMA)
@@ -129,27 +132,38 @@ class ProgramOptionsFactory {
               .hasArg()
               .argName("PATH")
               .type(String.class)
-              .desc("use a given PATH to read a JSON-schema file")
+              .desc("use a given PATH as a path to read a JSON-schema file")
+              .build());
+    options.addOption(
+        Option.builder("r")
+              .longOpt(ROOT)
+              .required()
+              .hasArg()
+              .argName("DIR")
+              .type(String.class)
+              .required()
+              .desc("use a given DIR as a directory " +
+                    "where template files will be read")
               .build());
     options.addOption(
         Option.builder("t")
-              .longOpt(TEMPLATE)
+              .longOpt(MAIN)
               .required()
               .hasArg()
-              .argName("PATH")
+              .argName("NAME")
               .type(String.class)
               .required()
-              .desc("use a given PATH to read a template file")
+              .desc("use a given NAME as a main template file name")
               .build());
     options.addOption(
-        Option.builder("out")
-              .longOpt(OUT_DIRECTORY)
+        Option.builder("o")
+              .longOpt(OUT)
               .required(false)
               .hasArg()
-              .argName("PATH")
+              .argName("DIR")
               .type(String.class)
-              .desc("use a given PATH as a directory " +
-                    "where generated files will be written.")
+              .desc("use a given DIR as a directory " +
+                    "where generated files will be written")
               .build());
     return options;
   }
