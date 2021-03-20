@@ -1,15 +1,13 @@
 package ru.dab.shaihulud.cli;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.dab.shaihulud.generator.Generator;
+import ru.dab.shaihulud.generator.ResultStore;
 import ru.dab.shaihulud.generator.TemplateBundle;
 import ru.dab.shaihulud.specification.*;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Reader;
-import java.io.Writer;
 
 public class Program {
   public static void main(String[] args) {
@@ -21,14 +19,13 @@ public class Program {
     try (
         InputStream schema = new SchemaFactory(options).create();
         InputStream specification = new SpecificationFactory(options).create();
-        Writer result = new OutputFactory(options).create()
+        ResultStore resultStore = new FileResultStoreFactory(options).create()
     ) {
       SpecificationParser parser = new SpecificationParserFactory(options)
           .create(schema);
       TemplateBundle template = new TemplateBundleFactory(options).create();
       Generator generator = new GeneratorFactory().create();
-
-      generator.generate(parser.parse(specification), template, result);
+      generator.generate(parser.parse(specification), template, resultStore);
     }
     catch (ParserException | IOException e) {
       System.err.println(e.getMessage());

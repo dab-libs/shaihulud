@@ -6,7 +6,7 @@ import ru.dab.shaihulud.specification.SpecificationParserType;
 
 class ProgramOptions
     implements SchemaOptions, SpecificationParserOptions, SpecificationOptions,
-               TemplateBundleOptions, OutputOptions {
+               TemplateBundleOptions, FileResultStoreOptions {
   private final @NotNull  String                  specification;
   private final @NotNull  SpecificationParserType specificationParserType;
   private final @Nullable String                  schema;
