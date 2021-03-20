@@ -22,7 +22,7 @@ public class MultiWriter_ignoreFirstEmptyLine_Tests {
   }
 
   @AfterEach
-  public void AfterEach() throws IOException {
+  public void closeAfterEach() throws IOException {
     multiWriter.close();
   }
 

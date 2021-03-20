@@ -13,11 +13,17 @@ class MultiWriter extends Writer {
   private @Nullable Writer  writer;
   private           boolean ignoreFirstEmptyLine = false;
 
-  private final @NotNull OutputStreamWriter systemOutWriter;
+  private final @NotNull OutputStreamWriter systemOutWriter =
+      new OutputStreamWriter(System.out);
 
   public MultiWriter() {
-    systemOutWriter = new OutputStreamWriter(System.out);
+    super();
     writer = systemOutWriter;
+  }
+
+  public MultiWriter(@NotNull Writer writer) {
+    super();
+    this.writer = writer;
   }
 
   public void setWriter(@NotNull Writer writer) throws IOException {

@@ -3,10 +3,7 @@ package ru.dab.shaihulud.generator.file;
 import org.jetbrains.annotations.NotNull;
 import ru.dab.shaihulud.generator.ResultStore;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
+import java.io.*;
 
 public class FileResultStore implements ResultStore {
   private final @NotNull File        root;
@@ -28,7 +25,7 @@ public class FileResultStore implements ResultStore {
         .replace('/', File.separatorChar)
         .replace('\\', File.separatorChar);
     File file = new File(root, normalizedFileName);
-    multiWriter.setWriter(new FileWriter(file));
+    multiWriter.setWriter(new BufferedWriter(new FileWriter(file)));
   }
 
   public void switchToSystemOut() throws IOException {
