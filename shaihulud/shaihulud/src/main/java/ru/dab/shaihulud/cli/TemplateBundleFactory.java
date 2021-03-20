@@ -2,7 +2,7 @@ package ru.dab.shaihulud.cli;
 
 import org.jetbrains.annotations.NotNull;
 import ru.dab.shaihulud.generator.TemplateBundle;
-import ru.dab.shaihulud.generator.FileTemplateBundle;
+import ru.dab.shaihulud.generator.file.FileTemplateBundle;
 
 import java.io.FileNotFoundException;
 

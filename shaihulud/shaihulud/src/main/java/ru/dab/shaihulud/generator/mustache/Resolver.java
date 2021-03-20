@@ -8,11 +8,10 @@ import ru.dab.shaihulud.generator.TemplateBundle;
 import java.io.IOException;
 import java.io.Reader;
 
-public class FileResolver implements MustacheResolver {
+public class Resolver implements MustacheResolver {
   private final @NotNull TemplateBundle templateBundle;
 
-  public FileResolver(
-      @NotNull TemplateBundle templateBundle) {
+  public Resolver(@NotNull TemplateBundle templateBundle) {
     this.templateBundle = templateBundle;
   }
 

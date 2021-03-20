@@ -3,6 +3,7 @@ package ru.dab.shaihulud.generator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
+import ru.dab.shaihulud.generator.file.FileTemplateBundle;
 
 import java.io.IOException;
 import java.io.Reader;

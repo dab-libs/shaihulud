@@ -1,6 +1,7 @@
-package ru.dab.shaihulud.generator;
+package ru.dab.shaihulud.generator.file;
 
 import org.jetbrains.annotations.NotNull;
+import ru.dab.shaihulud.generator.TemplateBundle;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;

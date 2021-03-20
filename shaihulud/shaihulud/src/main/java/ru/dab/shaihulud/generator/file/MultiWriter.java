@@ -1,4 +1,4 @@
-package ru.dab.shaihulud.generator;
+package ru.dab.shaihulud.generator.file;
 
 import org.jetbrains.annotations.NotNull;
 

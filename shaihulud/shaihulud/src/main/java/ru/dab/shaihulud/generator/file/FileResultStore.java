@@ -1,6 +1,7 @@
-package ru.dab.shaihulud.generator;
+package ru.dab.shaihulud.generator.file;
 
 import org.jetbrains.annotations.NotNull;
+import ru.dab.shaihulud.generator.ResultStore;
 
 import java.io.File;
 import java.io.FileWriter;

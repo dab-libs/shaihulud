@@ -20,7 +20,7 @@ public class MustacheGenerator implements Generator {
     GeneratingContext context = new GeneratingContext(
         specification, new Globals());
     MustacheFactory mf = new DefaultMustacheFactory(
-        new FileResolver(templateBundle));
+        new Resolver(templateBundle));
     Mustache mustache = mf.compile(
         context.createReader(templateBundle.getMain()), context.getName());
     mustache.execute(resultStore.getWriter(), context);
