@@ -1,6 +1,7 @@
 package ru.dab.shaihulud.generator.file;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -9,25 +10,26 @@ import java.io.Writer;
 class MultiWriter extends Writer {
   private final Object monitor = new Object();
 
-  private @NotNull Writer  writer;
-  private          boolean ignoreFirstEmptyLine = false;
+  private @Nullable Writer  writer;
+  private           boolean ignoreFirstEmptyLine = false;
+
+  private final @NotNull OutputStreamWriter systemOutWriter;
 
   public MultiWriter() {
-    writer = createSystemOutWriter();
+    systemOutWriter = new OutputStreamWriter(System.out);
+    writer = systemOutWriter;
   }
 
   public void setWriter(@NotNull Writer writer) throws IOException {
     synchronized (monitor) {
-      this.writer.flush();
-      this.writer.close();
-
+      closeWriter();
       this.writer = writer;
       ignoreFirstEmptyLine = true;
     }
   }
 
   public @NotNull Writer createSystemOutWriter() {
-    return new OutputStreamWriter(System.out);
+    return systemOutWriter;
   }
 
   @Override
@@ -47,17 +49,50 @@ class MultiWriter extends Writer {
           return;
         }
       }
+      if (writer == null) {
+        throw new IOException("Write is closed");
+      }
       writer.write(cbuf, off, len);
     }
   }
 
   @Override
   public void flush() throws IOException {
-    writer.flush();
+    synchronized (monitor) {
+      if (writer == null) {
+        throw new IOException("Write is closed");
+      }
+      writer.flush();
+    }
   }
 
   @Override
   public void close() throws IOException {
-    writer.close();
+    synchronized (monitor) {
+      closeWriter();
+    }
+  }
+
+  private void closeWriter() throws IOException {
+    if (writer == null) {
+      return;
+    }
+
+    if (writer == systemOutWriter) {
+      try {
+        writer.flush();
+      }
+      finally {
+        writer = null;
+      }
+    }
+    else {
+      try (Writer w = writer) {
+        w.flush();
+      }
+      finally {
+        writer = null;
+      }
+    }
   }
 }
