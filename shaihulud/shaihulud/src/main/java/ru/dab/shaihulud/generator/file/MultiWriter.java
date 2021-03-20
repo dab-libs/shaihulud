@@ -7,22 +7,23 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 
 class MultiWriter extends Writer {
-  private volatile @NotNull Writer writer;
+  private final Object monitor = new Object();
+
+  private @NotNull Writer  writer;
+  private          boolean ignoreFirstEmptyLine = false;
 
   public MultiWriter() {
     writer = createSystemOutWriter();
   }
 
-  public @NotNull Writer getWriter() {
-    return writer;
-  }
-
   public void setWriter(@NotNull Writer writer) throws IOException {
-    Writer oldWriter = this.writer;
-    this.writer = writer;
+    synchronized (monitor) {
+      this.writer.flush();
+      this.writer.close();
 
-    oldWriter.flush();
-    oldWriter.close();
+      this.writer = writer;
+      ignoreFirstEmptyLine = true;
+    }
   }
 
   public @NotNull Writer createSystemOutWriter() {
@@ -30,9 +31,24 @@ class MultiWriter extends Writer {
   }
 
   @Override
-  public void write(char[] cbuf, int off, int len)
-      throws IOException {
-    writer.write(cbuf, off, len);
+  public void write(char[] cbuf, int off, int len) throws IOException {
+    synchronized (monitor) {
+      if (ignoreFirstEmptyLine) {
+        ignoreFirstEmptyLine = false;
+        if (len >= 2 && cbuf[off] == '\r' && cbuf[off + 1] == '\n') {
+          off += 2;
+          len -= 2;
+        }
+        else if (len >= 1 && cbuf[off] == '\n') {
+          off += 1;
+          len -= 1;
+        }
+        if (len == 0) {
+          return;
+        }
+      }
+      writer.write(cbuf, off, len);
+    }
   }
 
   @Override

@@ -17,11 +17,11 @@ public class MustacheGenerator implements Generator {
       @NotNull Map<String, Object> specification,
       @NotNull TemplateBundle templateBundle,
       @NotNull ResultStore resultStore) {
-    GeneratingContext context = new GeneratingContext(
-        specification, new Globals());
-    MustacheFactory mf = new DefaultMustacheFactory(
+    MustacheFactory mustacheFactory = new DefaultMustacheFactory(
         new Resolver(templateBundle));
-    Mustache mustache = mf.compile(
+    GeneratingContext context = new GeneratingContext(
+        specification, new AdditionalFunctions(mustacheFactory, resultStore));
+    Mustache mustache = mustacheFactory.compile(
         context.createReader(templateBundle.getMain()), context.getName());
     mustache.execute(resultStore.getWriter(), context);
   }

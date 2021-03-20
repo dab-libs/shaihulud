@@ -7,12 +7,13 @@ import java.util.Map;
 
 public class GeneratingContext {
   public final @NotNull Map<String, Object> $SPEC$;
-  public final @NotNull Globals             $GLOBALS$;
+  public final @NotNull AdditionalFunctions $GEN$;
 
   public GeneratingContext(
-      @NotNull Map<String, Object> root, @NotNull Globals globals) {
+      @NotNull Map<String, Object> root,
+      @NotNull AdditionalFunctions additionalFunctions) {
     $SPEC$ = root;
-    $GLOBALS$ = globals;
+    $GEN$ = additionalFunctions;
   }
 
   public @NotNull String getName() {

@@ -19,7 +19,7 @@ public class FileResultStore implements ResultStore {
 
   @Override
   public @NotNull Writer getWriter() {
-    return multiWriter.getWriter();
+    return multiWriter;
   }
 
   @Override
