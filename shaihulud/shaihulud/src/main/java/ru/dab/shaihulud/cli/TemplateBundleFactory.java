@@ -15,6 +15,6 @@ public class TemplateBundleFactory {
 
   public @NotNull TemplateBundle create() throws FileNotFoundException {
     return new FileTemplateBundle(options.getRoot(), options.getMain(),
-                                  "mustache");
+                                  "twig");
   }
 }
