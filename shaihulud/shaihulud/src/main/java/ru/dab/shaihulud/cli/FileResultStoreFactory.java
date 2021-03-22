@@ -1,8 +1,8 @@
 package ru.dab.shaihulud.cli;
 
 import org.jetbrains.annotations.NotNull;
-import ru.dab.shaihulud.generator.file.FileResultStore;
 import ru.dab.shaihulud.generator.ResultStore;
+import ru.dab.shaihulud.generator.file.FileResultStore;
 
 import java.io.File;
 import java.io.IOException;

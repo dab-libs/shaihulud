@@ -4,7 +4,8 @@ import org.jetbrains.annotations.Nullable;
 import ru.dab.shaihulud.generator.Generator;
 import ru.dab.shaihulud.generator.ResultStore;
 import ru.dab.shaihulud.generator.TemplateBundle;
-import ru.dab.shaihulud.specification.*;
+import ru.dab.shaihulud.specification.ParserException;
+import ru.dab.shaihulud.specification.SpecificationParser;
 
 import java.io.IOException;
 import java.io.InputStream;
