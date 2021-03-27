@@ -146,7 +146,7 @@ class ProgramOptionsFactory {
                     "where template files will be read")
               .build());
     options.addOption(
-        Option.builder("t")
+        Option.builder("m")
               .longOpt(MAIN)
               .required()
               .hasArg()
