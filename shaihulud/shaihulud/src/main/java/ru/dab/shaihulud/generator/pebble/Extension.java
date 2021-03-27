@@ -12,16 +12,14 @@ import java.util.Map;
 
 public class Extension extends AbstractExtension {
   private final Map<String, Function> functionsByName;
-  private final Map<String, Filter>   filtersByName;
   private final Map<String, Object>   globalVariables;
 
   public Extension(@NotNull ResultStore resultStore) {
     functionsByName = new HashMap<>();
     functionsByName.put("writeFile", new WriteFile(resultStore));
-    filtersByName = new HashMap<>();
-    filtersByName.put("replaceAll", new ReplaceAll());
-    filtersByName.put("camelCase", new CamelCase());
-    filtersByName.put("pascalCase", new PascalCase());
+    functionsByName.put("replaceAll", new ReplaceAll());
+    functionsByName.put("camelCase", new CamelCase());
+    functionsByName.put("pascalCase", new PascalCase());
     globalVariables = new HashMap<>();
     globalVariables.put("SEPARATOR", File.separator);
   }
@@ -29,11 +27,6 @@ public class Extension extends AbstractExtension {
   @Override
   public Map<String, Function> getFunctions() {
     return functionsByName;
-  }
-
-  @Override
-  public Map<String, Filter> getFilters() {
-    return filtersByName;
   }
 
   @Override
