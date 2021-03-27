@@ -19,7 +19,7 @@ public class PascalCase implements Function {
                         PebbleTemplate self, EvaluationContext context,
                         int lineNumber) throws PebbleException {
     String string = args.get(argumentNames.get(0)).toString();
-    String result = "\\u"+string.replaceAll("[^\\w]+", "\\u\\L");
+    String result = "\\u"+string.replaceAll("[^\\w]+", "\\\\u\\\\L");
     result = MarkedCaseChanger.changeCase(result);
     return result;
   }
