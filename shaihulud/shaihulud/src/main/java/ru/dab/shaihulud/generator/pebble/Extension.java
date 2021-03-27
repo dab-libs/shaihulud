@@ -19,6 +19,7 @@ public class Extension extends AbstractExtension {
     filtersByName = new HashMap<>();
     filtersByName.put("replaceAll", new ReplaceAll());
     filtersByName.put("camelCase", new CamelCase());
+    filtersByName.put("pascalCase", new PascalCase());
   }
 
   @Override
