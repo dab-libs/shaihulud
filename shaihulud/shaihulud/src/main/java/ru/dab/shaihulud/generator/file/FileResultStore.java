@@ -25,6 +25,10 @@ public class FileResultStore implements ResultStore {
         .replace('/', File.separatorChar)
         .replace('\\', File.separatorChar);
     File file = new File(root, normalizedFileName);
+    File parent = file.getParentFile();
+    if (!parent.exists() && !parent.mkdirs()) {
+      throw new IOException("Couldn't create dir: " + parent);
+    }
     multiWriter.setWriter(new BufferedWriter(new FileWriter(file)));
   }
 
