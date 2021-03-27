@@ -17,7 +17,7 @@ public class PebbleGenerator implements Generator {
                        @NotNull ResultStore resultStore) throws IOException {
     PebbleEngine engine = new PebbleEngine
         .Builder()
-        .newLineTrimming(false)
+        .newLineTrimming(true)
         .loader(new Loader(templateBundle))
         .extension(new Extension(resultStore))
         .build();
