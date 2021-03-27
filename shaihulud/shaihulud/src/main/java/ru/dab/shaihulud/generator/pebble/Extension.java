@@ -18,6 +18,7 @@ public class Extension extends AbstractExtension {
     functionsByName.put("writeFile", new WriteFile(resultStore));
     filtersByName = new HashMap<>();
     filtersByName.put("replaceAll", new ReplaceAll());
+    filtersByName.put("camelCase", new CamelCase());
   }
 
   @Override
