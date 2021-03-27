@@ -20,6 +20,7 @@ public class Extension extends AbstractExtension {
     functionsByName.put("replaceAll", new ReplaceAll());
     functionsByName.put("camelCase", new CamelCase());
     functionsByName.put("pascalCase", new PascalCase());
+    functionsByName.put("debug", new Debug());
     globalVariables = new HashMap<>();
     globalVariables.put("SEPARATOR", File.separator);
   }
