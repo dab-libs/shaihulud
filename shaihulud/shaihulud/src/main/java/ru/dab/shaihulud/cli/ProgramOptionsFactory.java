@@ -12,6 +12,7 @@ class ProgramOptionsFactory {
   public static final String ROOT   = "root";
   public static final String MAIN   = "main";
   public static final String OUT    = "out";
+  public static final String CONFIG = "config";
 
   public @NotNull ProgramOptions create(
       @NotNull String[] commandLineArguments)
@@ -31,7 +32,8 @@ class ProgramOptionsFactory {
         commandLine.getOptionValue(SCHEMA),
         commandLine.getOptionValue(ROOT),
         commandLine.getOptionValue(MAIN),
-        commandLine.getOptionValue(OUT));
+        commandLine.getOptionValue(OUT),
+        commandLine.getOptionValue(CONFIG));
   }
 
   private @NotNull String getSpecification(
@@ -164,6 +166,15 @@ class ProgramOptionsFactory {
               .type(String.class)
               .desc("use a given DIR as a directory " +
                     "where generated files will be written")
+              .build());
+    options.addOption(
+        Option.builder("c")
+              .longOpt(CONFIG)
+              .required(false)
+              .hasArg()
+              .argName("PATH")
+              .type(String.class)
+              .desc("use a given PATH as a path to read a JSON config file")
               .build());
     return options;
   }

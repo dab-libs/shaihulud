@@ -28,6 +28,7 @@ public class Extension extends AbstractExtension {
     functionsByName = new HashMap<>();
     functionsByName.put("writeFile", new WriteFile(resultStore));
     functionsByName.put("debug", new Debug());
+    functionsByName.put("halt", new Halt());
     return functionsByName;
   }
 
@@ -38,6 +39,8 @@ public class Extension extends AbstractExtension {
     filtersByName.put("replaceAll", new ReplaceAll());
     filtersByName.put("camelCase", new CamelCase());
     filtersByName.put("pascalCase", new PascalCase());
+    filtersByName.put("upperCaseFirst", new UpperCaseFirst());
+    filtersByName.put("quoteString", new QuoteString());
     return filtersByName;
   }
 
@@ -46,6 +49,8 @@ public class Extension extends AbstractExtension {
     final Map<String, Object> globalVariables;
     globalVariables = new HashMap<>();
     globalVariables.put("SEPARATOR", File.separator);
+    globalVariables.put("SLASH", "/");
+    globalVariables.put("BACK_SLASH", "\\");
     return globalVariables;
   }
 

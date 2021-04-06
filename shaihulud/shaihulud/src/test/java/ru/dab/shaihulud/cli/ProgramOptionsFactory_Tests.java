@@ -18,7 +18,7 @@ class ProgramOptionsFactory_Tests {
     try {
       ProgramOptions programOptions =
           new ProgramOptionsFactory().create(args);
-      assertEquals("spec.yaml", programOptions.getSpecification());
+      assertEquals("spec.yaml", programOptions.getSpecificationPath());
       assertEquals(SpecificationParserType.Yaml, programOptions
           .getSpecificationParserType());
       assertEquals("schema.json", programOptions.getSchema());

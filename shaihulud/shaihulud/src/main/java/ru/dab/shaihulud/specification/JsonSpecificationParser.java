@@ -8,23 +8,22 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import java.io.InputStream;
+import java.io.Reader;
 import java.util.Map;
 
 public class JsonSpecificationParser implements SpecificationParser {
-  private final @Nullable InputStream schemaStream;
-  private @Nullable       JSONObject  schemaJson = null;
+  private final @Nullable Reader     schemaReader;
+  private @Nullable       JSONObject schemaJson = null;
 
-  public JsonSpecificationParser(@Nullable InputStream schemaStream) {
-    this.schemaStream = schemaStream;
+  public JsonSpecificationParser(@Nullable Reader schemaReader) {
+    this.schemaReader = schemaReader;
   }
 
   @Override
-  public @NotNull Map<String, Object> parse(
-      @NotNull InputStream specificationStream)
+  public @NotNull Map<String, Object> parse(@NotNull Reader specificationReader)
       throws ParserException {
-    JSONObject specification = parseJson(specificationStream);
-    if (schemaStream != null) {
+    JSONObject specification = parseJson(specificationReader);
+    if (schemaReader != null) {
       validateAndSetDefaults(specification);
     }
     return specification.toMap();
@@ -32,8 +31,8 @@ public class JsonSpecificationParser implements SpecificationParser {
 
   private void validateAndSetDefaults(JSONObject specification)
       throws ParserException {
-    if (schemaJson == null) {
-      schemaJson = parseJson(schemaStream);
+    if (schemaJson == null && schemaReader != null) {
+      schemaJson = parseJson(schemaReader);
     }
     try {
       Schema schema = SchemaLoader
@@ -50,10 +49,10 @@ public class JsonSpecificationParser implements SpecificationParser {
     }
   }
 
-  private JSONObject parseJson(InputStream inputStream) throws ParserException {
+  private JSONObject parseJson(@NotNull Reader reader) throws ParserException {
     try {
-      if (inputStream != null) {
-        return new JSONObject(new JSONTokener(inputStream));
+      if (reader != null) {
+        return new JSONObject(new JSONTokener(reader));
       }
       else {
         return new JSONObject();

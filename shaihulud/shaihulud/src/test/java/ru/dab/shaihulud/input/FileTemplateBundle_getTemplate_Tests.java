@@ -1,9 +1,9 @@
-package ru.dab.shaihulud.generator.file;
+package ru.dab.shaihulud.input;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
-import ru.dab.shaihulud.generator.file.FileTemplateBundle;
+import ru.dab.shaihulud.io.FileTemplateBundle;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -17,7 +17,7 @@ public class FileTemplateBundle_getTemplate_Tests {
   public void setup() {
     templateBundle = new FileTemplateBundle(
         "src/test/resources/FileTemplateBundle_getTemplate_Tests",
-        "template", "mustache");
+        "template");
   }
 
   @Test

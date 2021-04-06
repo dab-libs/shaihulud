@@ -1,4 +1,4 @@
-package ru.dab.shaihulud.generator.file;
+package ru.dab.shaihulud.io;
 
 import org.jetbrains.annotations.NotNull;
 import ru.dab.shaihulud.generator.TemplateBundle;
@@ -9,14 +9,11 @@ import java.nio.charset.StandardCharsets;
 public class FileTemplateBundle implements TemplateBundle {
   private final @NotNull File   root;
   private final @NotNull String mainTemplate;
-  private final @NotNull String extension;
 
   public FileTemplateBundle(
-      @NotNull String rootDir, @NotNull String mainTemplate,
-      @NotNull String extension) {
+      @NotNull String rootDir, @NotNull String mainTemplate) {
     this.root = new File(rootDir);
     this.mainTemplate = mainTemplate;
-    this.extension = extension;
   }
 
   @Override
@@ -26,8 +23,9 @@ public class FileTemplateBundle implements TemplateBundle {
 
   @Override
   public @NotNull Reader getTemplate(@NotNull String name) throws IOException {
-    String resourceName =
-        name.replace('.', File.separatorChar) + '.' + extension;
+    String resourceName = name
+        .replace('/', File.separatorChar)
+        .replace('\\', File.separatorChar);
 
     File templateFile = new File(root, resourceName);
 

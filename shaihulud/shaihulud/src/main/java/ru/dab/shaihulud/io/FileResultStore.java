@@ -1,16 +1,16 @@
-package ru.dab.shaihulud.generator.file;
+package ru.dab.shaihulud.io;
 
 import org.jetbrains.annotations.NotNull;
 import ru.dab.shaihulud.generator.ResultStore;
 
 import java.io.*;
 
-public class FileResultStore implements ResultStore {
+class FileResultStore implements ResultStore {
   private final @NotNull File        root;
   private final @NotNull MultiWriter multiWriter;
 
-  public FileResultStore(@NotNull String rootDir) {
-    this.root = new File(rootDir);
+  public FileResultStore(@NotNull File root) {
+    this.root = root;
     multiWriter = new MultiWriter();
   }
 

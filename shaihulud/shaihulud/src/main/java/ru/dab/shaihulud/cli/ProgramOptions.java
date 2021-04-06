@@ -4,15 +4,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.dab.shaihulud.specification.SpecificationParserType;
 
-class ProgramOptions
-    implements SchemaOptions, SpecificationParserOptions, SpecificationOptions,
-               TemplateBundleOptions, FileResultStoreOptions {
+class ProgramOptions {
   private final @NotNull  String                  specification;
   private final @NotNull  SpecificationParserType specificationParserType;
   private final @Nullable String                  schema;
   private final @NotNull  String                  templateRoot;
   private final @NotNull  String                  mainTemplate;
   private final @Nullable String                  outDirectory;
+  private final @Nullable String                  config;
 
   ProgramOptions(
       @NotNull String specification,
@@ -20,42 +19,42 @@ class ProgramOptions
       @Nullable String schema,
       @NotNull String templateRoot,
       @NotNull String mainTemplate,
-      @Nullable String outDirectory) {
+      @Nullable String outDirectory,
+      @Nullable String config) {
     this.specification = specification;
     this.specificationParserType = specificationParserType;
     this.schema = schema;
     this.templateRoot = templateRoot;
     this.mainTemplate = mainTemplate;
     this.outDirectory = outDirectory;
+    this.config = config;
   }
 
-  @Override
-  public @NotNull String getSpecification() {
+  public @NotNull String getSpecificationPath() {
     return specification;
   }
 
-  @Override
   public @NotNull SpecificationParserType getSpecificationParserType() {
     return specificationParserType;
   }
 
-  @Override
   public @Nullable String getSchema() {
     return schema;
   }
 
-  @Override
   public @NotNull String getRoot() {
     return templateRoot;
   }
 
-  @Override
   public @NotNull String getMain() {
     return mainTemplate;
   }
 
-  @Override
   public @Nullable String getOutDirectory() {
     return outDirectory;
+  }
+
+  public @Nullable String getConfig() {
+    return config;
   }
 }

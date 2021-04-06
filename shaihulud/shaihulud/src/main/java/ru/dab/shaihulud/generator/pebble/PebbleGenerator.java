@@ -3,6 +3,7 @@ package ru.dab.shaihulud.generator.pebble;
 import com.mitchellbosecke.pebble.PebbleEngine;
 import com.mitchellbosecke.pebble.template.PebbleTemplate;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import ru.dab.shaihulud.generator.Generator;
 import ru.dab.shaihulud.generator.ResultStore;
 import ru.dab.shaihulud.generator.TemplateBundle;
@@ -14,7 +15,8 @@ public class PebbleGenerator implements Generator {
   @Override
   public void generate(@NotNull Map<String, Object> specification,
                        @NotNull TemplateBundle templateBundle,
-                       @NotNull ResultStore resultStore) throws IOException {
+                       @NotNull ResultStore resultStore,
+                       @Nullable Map<String, Object> options) throws IOException {
     PebbleEngine engine = new PebbleEngine
         .Builder()
         .newLineTrimming(true)

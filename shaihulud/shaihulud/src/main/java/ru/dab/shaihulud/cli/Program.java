@@ -1,14 +1,17 @@
 package ru.dab.shaihulud.cli;
 
 import org.jetbrains.annotations.Nullable;
-import ru.dab.shaihulud.generator.Generator;
-import ru.dab.shaihulud.generator.ResultStore;
-import ru.dab.shaihulud.generator.TemplateBundle;
-import ru.dab.shaihulud.specification.ParserException;
+import ru.dab.shaihulud.config.ConfigException;
+import ru.dab.shaihulud.config.ConfigParserFactory;
+import ru.dab.shaihulud.generator.*;
+import ru.dab.shaihulud.io.ResultStoreFactory;
+import ru.dab.shaihulud.io.ReaderFactory;
+import ru.dab.shaihulud.io.TemplateBundleFactory;
 import ru.dab.shaihulud.specification.SpecificationParser;
+import ru.dab.shaihulud.specification.SpecificationParserFactory;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.Reader;
+import java.util.Map;
 
 public class Program {
   public static void main(String[] args) {
@@ -17,20 +20,46 @@ public class Program {
       return;
     }
 
+    ReaderFactory readerFactory = new ReaderFactory();
+    ResultStoreFactory resultStoreFactory = new ResultStoreFactory();
+    SpecificationParserFactory specificationParserFactory =
+        new SpecificationParserFactory();
     try (
-        InputStream schema = new SchemaFactory(options).create();
-        InputStream specification = new SpecificationFactory(options).create();
-        ResultStore resultStore = new FileResultStoreFactory(options).create()
+        Reader schemaReader =
+            readerFactory.createOptional(options.getSchema());
+        Reader specificationReader =
+            readerFactory.create(options.getSpecificationPath());
+        ResultStore resultStore =
+            resultStoreFactory.create(options.getOutDirectory());
+        Reader configReader =
+            readerFactory.createOptional(options.getConfig())
     ) {
-      SpecificationParser parser = new SpecificationParserFactory(options)
-          .create(schema);
-      TemplateBundle template = new TemplateBundleFactory(options).create();
+      SpecificationParser specificationParser = specificationParserFactory
+          .create(options.getSpecificationParserType(), schemaReader);
+      Map<String, Object> specification =
+          specificationParser.parse(specificationReader);
+      final TemplateBundleFactory templateBundleFactory =
+          new TemplateBundleFactory();
+      TemplateBundle template = templateBundleFactory
+          .create(options.getRoot(), options.getMain());
       Generator generator = new GeneratorFactory().create();
-      generator.generate(parser.parse(specification), template, resultStore);
+      Map<String, Object> config = readConfig(configReader);
+      generator.generate(
+          specification, template, resultStore, config);
     }
-    catch (ParserException | IOException e) {
+    catch (Throwable e) {
       System.err.println(e.getMessage());
     }
+  }
+
+  @Nullable
+  private static Map<String, Object> readConfig(Reader configReader)
+      throws ConfigException {
+    Map<String, Object> config = null;
+    if (configReader != null) {
+      config = new ConfigParserFactory().create().parse(configReader);
+    }
+    return config;
   }
 
   private static @Nullable ProgramOptions createOptions(String[] args) {

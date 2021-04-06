@@ -9,23 +9,23 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.yaml.snakeyaml.Yaml;
 
-import java.io.InputStream;
+import java.io.Reader;
 import java.util.Map;
 
 public class YamlSpecificationParser implements SpecificationParser {
-  private final @Nullable InputStream schemaStream;
-  private @Nullable       JSONObject  schemaJson = null;
+  private final @Nullable Reader     schemaReader;
+  private @Nullable       JSONObject schemaJson = null;
 
-  public YamlSpecificationParser(@Nullable InputStream schemaStream) {
-    this.schemaStream = schemaStream;
+  public YamlSpecificationParser(@Nullable Reader schemaReader) {
+    this.schemaReader = schemaReader;
   }
 
   @Override
   public @NotNull Map<String, Object> parse(
-      @NotNull InputStream specificationStream)
+      @NotNull Reader specificationStream)
       throws ParserException {
     JSONObject specification = parseYaml(specificationStream);
-    if (schemaStream != null) {
+    if (schemaReader != null) {
       validateAndSetDefaults(specification);
     }
     return specification.toMap();
@@ -34,7 +34,7 @@ public class YamlSpecificationParser implements SpecificationParser {
   private void validateAndSetDefaults(JSONObject specification)
       throws ParserException {
     if (schemaJson == null) {
-      schemaJson = parseJson(schemaStream);
+      schemaJson = parseJson(schemaReader);
     }
     try {
       Schema schema = SchemaLoader
@@ -51,10 +51,10 @@ public class YamlSpecificationParser implements SpecificationParser {
     }
   }
 
-  private JSONObject parseJson(InputStream inputStream) throws ParserException {
+  private JSONObject parseJson(Reader reader) throws ParserException {
     try {
-      if (inputStream != null) {
-        return new JSONObject(new JSONTokener(inputStream));
+      if (reader != null) {
+        return new JSONObject(new JSONTokener(reader));
       }
       else {
         return new JSONObject();
@@ -65,7 +65,7 @@ public class YamlSpecificationParser implements SpecificationParser {
     }
   }
 
-  private JSONObject parseYaml(InputStream inputStream) {
+  private JSONObject parseYaml(Reader inputStream) {
     Yaml yaml = new Yaml();
     Map<String, Object> objectMap = yaml.load(inputStream);
     return new JSONObject(objectMap);
