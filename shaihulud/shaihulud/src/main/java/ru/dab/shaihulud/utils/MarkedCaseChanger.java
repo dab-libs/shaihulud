@@ -7,6 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class MarkedCaseChanger {
+  private boolean prevInWord = false;
+
   public static @NotNull String changeCase(@NotNull String str) {
     return new MarkedCaseChanger().changeMarkedCaseInner(str);
   }
@@ -19,10 +21,18 @@ public class MarkedCaseChanger {
   }
 
   private @NotNull String changeMarkedCaseInner(@NotNull String str) {
+    boolean prevLexeme = true;
     for (int i = 0; i < str.length(); i++) {
       char ch = str.charAt(i);
-      if (!handleLexeme(ch)) {
+      if (handleLexeme(ch)) {
+        if (!prevLexeme) {
+          applyChangers(' ');
+        }
+        prevLexeme = true;
+      }
+      else {
         result.append(applyChangers(ch));
+        prevLexeme = false;
       }
     }
 
@@ -82,20 +92,20 @@ public class MarkedCaseChanger {
   }
 
   private @NotNull ChangingResult changeLowerCaseWord(char ch) {
-    return new ChangingResult(Character.toLowerCase(ch), isNotWordPart(ch));
+    return new ChangingResult(Character.toLowerCase(ch), !isWordPart(ch));
   }
 
   private @NotNull ChangingResult changeUpperCaseLetter(char ch) {
     return new ChangingResult(Character.toUpperCase(ch), true);
   }
-  
+
   private @NotNull ChangingResult changeUpperCaseWord(char ch) {
-    return new ChangingResult(Character.toUpperCase(ch), isNotWordPart(ch));
+    return new ChangingResult(Character.toUpperCase(ch), !isWordPart(ch));
   }
 
-  private boolean isNotWordPart(char ch) {
-    return !Character.isLetterOrDigit(ch) &&
-           !Character.isAlphabetic(ch) && ch != '_';
+  private boolean isWordPart(char ch) {
+    return Character.isLetterOrDigit(ch) ||
+           Character.isAlphabetic(ch) || ch == '_';
   }
 
   private interface Changer {
