@@ -41,6 +41,7 @@ public class Extension extends AbstractExtension {
     filtersByName.put("pascalCase", new PascalCase());
     filtersByName.put("upperCaseFirst", new UpperCaseFirst());
     filtersByName.put("quoteString", new QuoteString());
+    filtersByName.put("sortKeys", new SortKeys());
     return filtersByName;
   }
 
