@@ -23,13 +23,10 @@ public class PebbleGenerator implements Generator {
         .Builder()
         .newLineTrimming(true)
         .loader(new Loader(templateBundle))
-        .extension(new Extension(resultStore))
+        .extension(new Extension(resultStore, config))
         .build();
     PebbleTemplate template = engine.getTemplate(templateBundle.getMain());
     Map<String, Object> context = new HashMap<>(specification);
-    if (config != null) {
-      context.put("$CONFIG$", config);
-    }
     template.evaluate(resultStore.getWriter(), context);
   }
 }
