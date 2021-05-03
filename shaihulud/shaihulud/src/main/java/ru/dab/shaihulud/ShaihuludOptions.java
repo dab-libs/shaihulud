@@ -2,40 +2,39 @@ package ru.dab.shaihulud;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.dab.shaihulud.specification.SpecificationParserType;
+import ru.dab.shaihulud.specification.ParserType;
 
 public class ShaihuludOptions {
-  private final @NotNull  String                  specification;
-  private final @NotNull  SpecificationParserType specificationParserType;
-  private final @Nullable String                  schema;
-  private final @NotNull  String                  templateRoot;
-  private final @NotNull  String                  mainTemplate;
-  private final @Nullable String                  outDirectory;
-  private final @Nullable String                  config;
+  private final @Nullable String     schema;
+  private final @NotNull  ParserType parserType;
+  private final @NotNull  String     specification;
+  private final @Nullable String     transformation;
+  private final @NotNull  String     templateRoot;
+  private final @NotNull  String     mainTemplate;
+  private final @Nullable String     outDirectory;
+  private final @Nullable String     config;
 
   public ShaihuludOptions(
-      @NotNull String specification,
-      @NotNull SpecificationParserType specificationParserType,
-      @Nullable String schema,
-      @NotNull String templateRoot,
-      @NotNull String mainTemplate,
-      @Nullable String outDirectory,
-      @Nullable String config) {
+      @Nullable String schema, @NotNull ParserType parserType,
+      @NotNull String specification, @Nullable String transformation,
+      @NotNull String templateRoot, @NotNull String mainTemplate,
+      @Nullable String outDirectory, @Nullable String config) {
     this.specification = specification;
-    this.specificationParserType = specificationParserType;
+    this.parserType = parserType;
     this.schema = schema;
+    this.transformation = transformation;
     this.templateRoot = templateRoot;
     this.mainTemplate = mainTemplate;
     this.outDirectory = outDirectory;
     this.config = config;
   }
 
-  public @NotNull String getSpecificationPath() {
+  public @NotNull String getSpecification() {
     return specification;
   }
 
-  public @NotNull SpecificationParserType getSpecificationParserType() {
-    return specificationParserType;
+  public @NotNull ParserType getParserType() {
+    return parserType;
   }
 
   public @Nullable String getSchema() {
@@ -56,5 +55,9 @@ public class ShaihuludOptions {
 
   public @Nullable String getConfig() {
     return config;
+  }
+
+  public @Nullable String getTransformation() {
+    return transformation;
   }
 }

@@ -3,17 +3,18 @@ package ru.dab.shaihulud.cli;
 import org.apache.commons.cli.*;
 import org.jetbrains.annotations.NotNull;
 import ru.dab.shaihulud.ShaihuludOptions;
-import ru.dab.shaihulud.specification.SpecificationParserType;
+import ru.dab.shaihulud.specification.ParserType;
 
 class ProgramOptionsFactory {
-  public static final String HELP   = "help";
-  public static final String YAML   = "yaml";
-  public static final String JSON   = "json";
-  public static final String SCHEMA = "schema";
-  public static final String ROOT   = "root";
-  public static final String MAIN   = "main";
-  public static final String OUT    = "out";
-  public static final String CONFIG = "config";
+  public static final String HELP      = "help";
+  public static final String SCHEMA    = "schema";
+  public static final String YAML      = "yaml";
+  public static final String JSON      = "json";
+  public static final String TRANSFORM = "transform";
+  public static final String ROOT      = "root";
+  public static final String MAIN      = "main";
+  public static final String OUT       = "out";
+  public static final String CONFIG    = "config";
 
   public @NotNull ShaihuludOptions create(
       @NotNull String[] commandLineArguments)
@@ -29,12 +30,10 @@ class ProgramOptionsFactory {
     }
 
     return new ShaihuludOptions(
-        getSpecification(commandLine), getSpecificationFormat(commandLine),
-        commandLine.getOptionValue(SCHEMA),
-        commandLine.getOptionValue(ROOT),
-        commandLine.getOptionValue(MAIN),
-        commandLine.getOptionValue(OUT),
-        commandLine.getOptionValue(CONFIG));
+        commandLine.getOptionValue(SCHEMA), getSpecificationFormat(commandLine),
+        getSpecification(commandLine), commandLine.getOptionValue(TRANSFORM),
+        commandLine.getOptionValue(ROOT), commandLine.getOptionValue(MAIN),
+        commandLine.getOptionValue(OUT), commandLine.getOptionValue(CONFIG));
   }
 
   private @NotNull String getSpecification(
@@ -45,8 +44,7 @@ class ProgramOptionsFactory {
 
     if (yamlSpecification == null && jsonSpecification == null) {
       throw new WrongOptionsException(
-          "One of the options '" + YAML + "' or '" +
-          JSON + "' is required");
+          "One of the options '" + YAML + "' or '" + JSON + "' is required");
     }
     else if (yamlSpecification == null) {
       return jsonSpecification;
@@ -56,7 +54,7 @@ class ProgramOptionsFactory {
     }
   }
 
-  private @NotNull SpecificationParserType getSpecificationFormat(
+  private @NotNull ParserType getSpecificationFormat(
       @NotNull CommandLine commandLine)
       throws WrongOptionsException {
     String yamlSpecification = commandLine.getOptionValue(YAML);
@@ -68,10 +66,10 @@ class ProgramOptionsFactory {
           JSON + "' is required");
     }
     else if (yamlSpecification == null) {
-      return SpecificationParserType.Json;
+      return ParserType.Json;
     }
     else {
-      return SpecificationParserType.Yaml;
+      return ParserType.Yaml;
     }
   }
 
@@ -105,6 +103,15 @@ class ProgramOptionsFactory {
               .longOpt(HELP)
               .desc("print this message.")
               .build());
+    options.addOption(
+        Option.builder("s")
+              .longOpt(SCHEMA)
+              .required(false)
+              .hasArg()
+              .argName("PATH")
+              .type(String.class)
+              .desc("use a given PATH as a path to read a JSON-schema file")
+              .build());
     OptionGroup spec = new OptionGroup()
         .addOption(
             Option.builder("y")
@@ -129,13 +136,13 @@ class ProgramOptionsFactory {
     spec.setRequired(true);
     options.addOptionGroup(spec);
     options.addOption(
-        Option.builder("s")
-              .longOpt(SCHEMA)
-              .required()
+        Option.builder("t")
+              .longOpt(TRANSFORM)
+              .required(false)
               .hasArg()
               .argName("PATH")
               .type(String.class)
-              .desc("use a given PATH as a path to read a JSON-schema file")
+              .desc("use a given PATH as a path to a transformation script")
               .build());
     options.addOption(
         Option.builder("r")

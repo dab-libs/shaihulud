@@ -11,19 +11,18 @@ import ru.dab.shaihulud.generator.TemplateBundle;
 import ru.dab.shaihulud.io.ReaderFactory;
 import ru.dab.shaihulud.io.ResultStoreFactory;
 import ru.dab.shaihulud.io.TemplateBundleFactory;
-import ru.dab.shaihulud.specification.Parser;
 import ru.dab.shaihulud.specification.ParserException;
 import ru.dab.shaihulud.specification.ParserFactory;
+import ru.dab.shaihulud.transfomer.TransformerFactory;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.Map;
 
 public class Shaihulud {
-  private final @NotNull GeneratorFactory generatorFactory;
-  private final @NotNull ReaderFactory readerFactory;
-  private final @NotNull ParserFactory parserFactory;
+  private final @NotNull GeneratorFactory   generatorFactory;
+  private final @NotNull ReaderFactory      readerFactory;
+  private final @NotNull ParserFactory      parserFactory;
   private final @NotNull ResultStoreFactory resultStoreFactory;
 
   public Shaihulud(
@@ -37,27 +36,37 @@ public class Shaihulud {
     this.resultStoreFactory = resultStoreFactory;
   }
 
+  @SuppressWarnings("unchecked")
   public void transform(ShaihuludOptions options)
       throws IOException, ParserException, ConfigException {
-     try (
+    try (
         Reader schemaReader =
             readerFactory.createOptional(options.getSchema());
         Reader specificationReader =
-            readerFactory.create(options.getSpecificationPath());
+            readerFactory.create(options.getSpecification());
+        Reader transformationReader =
+            readerFactory.createOptional(options.getTransformation());
         ResultStore resultStore =
             resultStoreFactory.create(options.getOutDirectory());
         Reader configReader =
             readerFactory.createOptional(options.getConfig())
     ) {
-      Parser parser = parserFactory
-          .create(options.getSpecificationParserType(), schemaReader);
-      Map<String, Object> specification = parser.parse(specificationReader);
-      final TemplateBundleFactory templateBundleFactory =
-          new TemplateBundleFactory();
-      TemplateBundle template = templateBundleFactory
+      Map<String, Object> specification = parserFactory
+          .create(options.getParserType(), schemaReader)
+          .parse(specificationReader);
+
+      if (transformationReader != null) {
+        specification = (Map<String, Object>) new TransformerFactory()
+            .create()
+            .transform(transformationReader, specification);
+      }
+
+      TemplateBundle template = new TemplateBundleFactory()
           .create(options.getRoot(), options.getMain());
-      Generator generator = new GeneratorFactory().create();
+
       Map<String, Object> config = readConfig(configReader);
+
+      Generator generator = new GeneratorFactory().create();
       generator.generate(specification, template, resultStore, config);
     }
   }

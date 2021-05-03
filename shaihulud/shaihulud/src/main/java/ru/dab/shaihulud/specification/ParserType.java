@@ -1,6 +1,6 @@
 package ru.dab.shaihulud.specification;
 
-public enum SpecificationParserType {
+public enum ParserType {
   Json,
   Yaml
 }

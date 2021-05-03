@@ -2,7 +2,7 @@ package ru.dab.shaihulud.cli;
 
 import org.junit.jupiter.api.Test;
 import ru.dab.shaihulud.ShaihuludOptions;
-import ru.dab.shaihulud.specification.SpecificationParserType;
+import ru.dab.shaihulud.specification.ParserType;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,9 +19,9 @@ class ShaihuludOptionsFactory_Tests {
     try {
       ShaihuludOptions shaihuludOptions =
           new ProgramOptionsFactory().create(args);
-      assertEquals("spec.yaml", shaihuludOptions.getSpecificationPath());
-      assertEquals(SpecificationParserType.Yaml, shaihuludOptions
-          .getSpecificationParserType());
+      assertEquals("spec.yaml", shaihuludOptions.getSpecification());
+      assertEquals(ParserType.Yaml, shaihuludOptions
+          .getParserType());
       assertEquals("schema.json", shaihuludOptions.getSchema());
       assertEquals("templates", shaihuludOptions.getRoot());
       assertEquals("template", shaihuludOptions.getMain());

@@ -1,17 +1,12 @@
 package ru.dab.shaihulud.cli;
 
 import org.jetbrains.annotations.Nullable;
-import ru.dab.shaihulud.ShaihuludOptions;
 import ru.dab.shaihulud.Shaihulud;
-import ru.dab.shaihulud.config.ConfigException;
-import ru.dab.shaihulud.config.ConfigParserFactory;
+import ru.dab.shaihulud.ShaihuludOptions;
 import ru.dab.shaihulud.generator.GeneratorFactory;
 import ru.dab.shaihulud.io.ReaderFactory;
 import ru.dab.shaihulud.io.ResultStoreFactory;
 import ru.dab.shaihulud.specification.ParserFactory;
-
-import java.io.Reader;
-import java.util.Map;
 
 public class Program {
   public static void main(String[] args) {

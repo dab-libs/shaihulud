@@ -7,7 +7,7 @@ import java.io.Reader;
 
 public class ParserFactory {
   public @NotNull Parser create(
-      @NotNull SpecificationParserType parserType, @Nullable Reader schema) {
+      @NotNull ParserType parserType, @Nullable Reader schema) {
     switch (parserType) {
       case Json:
         return new JsonParser(schema);
