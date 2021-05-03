@@ -1,11 +1,12 @@
 package ru.dab.shaihulud.cli;
 
 import org.junit.jupiter.api.Test;
+import ru.dab.shaihulud.ShaihuludOptions;
 import ru.dab.shaihulud.specification.SpecificationParserType;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ProgramOptionsFactory_Tests {
+class ShaihuludOptionsFactory_Tests {
   @Test
   void testTrivial() {
     String[] args = new String[]{
@@ -16,15 +17,15 @@ class ProgramOptionsFactory_Tests {
         "-out", "outDir"
     };
     try {
-      ProgramOptions programOptions =
+      ShaihuludOptions shaihuludOptions =
           new ProgramOptionsFactory().create(args);
-      assertEquals("spec.yaml", programOptions.getSpecificationPath());
-      assertEquals(SpecificationParserType.Yaml, programOptions
+      assertEquals("spec.yaml", shaihuludOptions.getSpecificationPath());
+      assertEquals(SpecificationParserType.Yaml, shaihuludOptions
           .getSpecificationParserType());
-      assertEquals("schema.json", programOptions.getSchema());
-      assertEquals("templates", programOptions.getRoot());
-      assertEquals("template", programOptions.getMain());
-      assertEquals("outDir", programOptions.getOutDirectory());
+      assertEquals("schema.json", shaihuludOptions.getSchema());
+      assertEquals("templates", shaihuludOptions.getRoot());
+      assertEquals("template", shaihuludOptions.getMain());
+      assertEquals("outDir", shaihuludOptions.getOutDirectory());
     }
     catch (WrongOptionsException | NeedHelpException e) {
       fail(e.getMessage(), e);

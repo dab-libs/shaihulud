@@ -5,14 +5,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.Reader;
 
-public class SpecificationParserFactory {
-  public @NotNull SpecificationParser create(
+public class ParserFactory {
+  public @NotNull Parser create(
       @NotNull SpecificationParserType parserType, @Nullable Reader schema) {
     switch (parserType) {
       case Json:
-        return new JsonSpecificationParser(schema);
+        return new JsonParser(schema);
       case Yaml:
-        return new YamlSpecificationParser(schema);
+        return new YamlParser(schema);
       default:
         throw new RuntimeException();
     }

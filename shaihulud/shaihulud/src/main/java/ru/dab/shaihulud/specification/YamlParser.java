@@ -7,22 +7,24 @@ import org.jetbrains.annotations.Nullable;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+import org.yaml.snakeyaml.Yaml;
 
 import java.io.Reader;
 import java.util.Map;
 
-public class JsonSpecificationParser implements SpecificationParser {
+public class YamlParser implements Parser {
   private final @Nullable Reader     schemaReader;
   private @Nullable       JSONObject schemaJson = null;
 
-  public JsonSpecificationParser(@Nullable Reader schemaReader) {
+  public YamlParser(@Nullable Reader schemaReader) {
     this.schemaReader = schemaReader;
   }
 
   @Override
-  public @NotNull Map<String, Object> parse(@NotNull Reader specificationReader)
+  public @NotNull Map<String, Object> parse(
+      @NotNull Reader specificationStream)
       throws ParserException {
-    JSONObject specification = parseJson(specificationReader);
+    JSONObject specification = parseYaml(specificationStream);
     if (schemaReader != null) {
       validateAndSetDefaults(specification);
     }
@@ -31,7 +33,7 @@ public class JsonSpecificationParser implements SpecificationParser {
 
   private void validateAndSetDefaults(JSONObject specification)
       throws ParserException {
-    if (schemaJson == null && schemaReader != null) {
+    if (schemaJson == null) {
       schemaJson = parseJson(schemaReader);
     }
     try {
@@ -49,7 +51,7 @@ public class JsonSpecificationParser implements SpecificationParser {
     }
   }
 
-  private JSONObject parseJson(@NotNull Reader reader) throws ParserException {
+  private JSONObject parseJson(Reader reader) throws ParserException {
     try {
       if (reader != null) {
         return new JSONObject(new JSONTokener(reader));
@@ -61,6 +63,12 @@ public class JsonSpecificationParser implements SpecificationParser {
     catch (JSONException e) {
       throw new ParserException(e.getMessage(), e);
     }
+  }
+
+  private JSONObject parseYaml(Reader inputStream) {
+    Yaml yaml = new Yaml();
+    Map<String, Object> objectMap = yaml.load(inputStream);
+    return new JSONObject(objectMap);
   }
 
 }

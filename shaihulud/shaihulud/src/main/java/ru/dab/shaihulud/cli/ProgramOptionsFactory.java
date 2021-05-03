@@ -2,6 +2,7 @@ package ru.dab.shaihulud.cli;
 
 import org.apache.commons.cli.*;
 import org.jetbrains.annotations.NotNull;
+import ru.dab.shaihulud.ShaihuludOptions;
 import ru.dab.shaihulud.specification.SpecificationParserType;
 
 class ProgramOptionsFactory {
@@ -14,7 +15,7 @@ class ProgramOptionsFactory {
   public static final String OUT    = "out";
   public static final String CONFIG = "config";
 
-  public @NotNull ProgramOptions create(
+  public @NotNull ShaihuludOptions create(
       @NotNull String[] commandLineArguments)
       throws WrongOptionsException, NeedHelpException {
     if (commandLineArguments.length == 0) {
@@ -27,7 +28,7 @@ class ProgramOptionsFactory {
       throw new NeedHelpException();
     }
 
-    return new ProgramOptions(
+    return new ShaihuludOptions(
         getSpecification(commandLine), getSpecificationFormat(commandLine),
         commandLine.getOptionValue(SCHEMA),
         commandLine.getOptionValue(ROOT),

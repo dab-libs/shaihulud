@@ -1,10 +1,10 @@
-package ru.dab.shaihulud.cli;
+package ru.dab.shaihulud;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.dab.shaihulud.specification.SpecificationParserType;
 
-class ProgramOptions {
+public class ShaihuludOptions {
   private final @NotNull  String                  specification;
   private final @NotNull  SpecificationParserType specificationParserType;
   private final @Nullable String                  schema;
@@ -13,7 +13,7 @@ class ProgramOptions {
   private final @Nullable String                  outDirectory;
   private final @Nullable String                  config;
 
-  ProgramOptions(
+  public ShaihuludOptions(
       @NotNull String specification,
       @NotNull SpecificationParserType specificationParserType,
       @Nullable String schema,
