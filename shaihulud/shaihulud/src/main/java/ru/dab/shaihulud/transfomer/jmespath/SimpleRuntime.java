@@ -41,7 +41,13 @@ public class SimpleRuntime extends BaseRuntime<Object> {
   @Override
   public String toString(Object o) {
     if (o == null) {
-      return "null";
+      return null;
+    }
+    if (o instanceof Map) {
+      return null;
+    }
+    if (o instanceof List) {
+      return null;
     }
     return o.toString();
   }
@@ -125,6 +131,9 @@ public class SimpleRuntime extends BaseRuntime<Object> {
 
   @Override
   public Object createArray(Collection<Object> collection) {
+    if (collection instanceof List) {
+      return collection;
+    }
     return new ArrayList<>(collection);
   }
 

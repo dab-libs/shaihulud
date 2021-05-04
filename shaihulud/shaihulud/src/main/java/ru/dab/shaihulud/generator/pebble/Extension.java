@@ -38,6 +38,7 @@ public class Extension extends AbstractExtension {
   private Map<String, Filter> createFilters() {
     final Map<String, Filter> filtersByName;
     filtersByName = new HashMap<>();
+    filtersByName.put("escapeSlashes", new EscapeSlashes());
     filtersByName.put("replaceAll", new ReplaceAll());
     filtersByName.put("camelCase", new CamelCase());
     filtersByName.put("pascalCase", new PascalCase());

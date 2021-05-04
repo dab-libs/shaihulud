@@ -19,7 +19,10 @@ public class JmesPathTransformer implements Transformer {
         .defaultRegistry()
         .extend(
             new Debug(),
+            new Entries(),
+            new HaltEmpty(),
             new ReplaceAll(),
+            new UpperCaseFirst(),
             new PascalCase(),
             new KebabCase());
     RuntimeConfiguration configuration = new RuntimeConfiguration.Builder()

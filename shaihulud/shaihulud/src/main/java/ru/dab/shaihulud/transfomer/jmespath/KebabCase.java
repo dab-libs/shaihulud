@@ -12,14 +12,17 @@ import java.util.List;
 public class KebabCase extends BaseFunction {
   public KebabCase() {
     super("kebab_case",
-          ArgumentConstraints.typeOf(JmesPathType.STRING));
+          ArgumentConstraints.typeOf(JmesPathType.STRING, JmesPathType.NULL));
   }
 
   @Override
   protected <T> T callFunction(Adapter<T> runtime,
                                List<FunctionArgument<T>> arguments) {
-    String result = runtime
-        .toString(arguments.get(0).value())
+    String string = runtime.toString(arguments.get(0).value());
+    if (string == null) {
+      return runtime.createNull();
+    }
+    String result = string
         .toLowerCase()
         .replaceAll("[^\\w]+", "-");
     return runtime.createString(result);
