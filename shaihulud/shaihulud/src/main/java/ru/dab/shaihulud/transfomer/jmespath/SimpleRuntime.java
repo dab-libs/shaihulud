@@ -38,16 +38,41 @@ public class SimpleRuntime extends BaseRuntime<Object> {
     return null;
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public String toString(Object o) {
     if (o == null) {
       return null;
     }
     if (o instanceof Map) {
-      return null;
+      StringBuilder result = new StringBuilder();
+      result.append('{');
+      Map<Object, Object> map = (Map<Object, Object>) o;
+      for (Map.Entry<Object, Object> entry : map.entrySet()) {
+        result.append(toString(entry.getKey()));
+        result.append(": ");
+        result.append(toString(entry.getValue()));
+        result.append(", ");
+      }
+      if (!map.isEmpty()) {
+        result.setLength(result.length() - 2);
+      }
+      result.append('}');
+      return result.toString();
     }
     if (o instanceof List) {
-      return null;
+      StringBuilder result = new StringBuilder();
+      result.append('[');
+      List<Object> list = (List<Object>) o;
+      for (Object item : list) {
+        result.append(toString(item));
+        result.append(", ");
+      }
+      if (!list.isEmpty()) {
+        result.setLength(result.length() - 2);
+      }
+      result.append(']');
+      return result.toString();
     }
     return o.toString();
   }
@@ -70,13 +95,13 @@ public class SimpleRuntime extends BaseRuntime<Object> {
       return (Boolean) o;
     }
     if (o instanceof String) {
-      return ((String) o).length() == 0;
+      return ((String) o).length() != 0;
     }
     if (o instanceof List) {
-      return ((List<Object>) o).isEmpty();
+      return !((List<Object>) o).isEmpty();
     }
     if (o instanceof Map) {
-      return ((Map<Object, Object>) o).isEmpty();
+      return !((Map<Object, Object>) o).isEmpty();
     }
 
     return true;

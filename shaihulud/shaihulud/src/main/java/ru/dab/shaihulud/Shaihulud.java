@@ -24,6 +24,7 @@ public class Shaihulud {
   private final @NotNull ReaderFactory      readerFactory;
   private final @NotNull ParserFactory      parserFactory;
   private final @NotNull ResultStoreFactory resultStoreFactory;
+  private final @NotNull TransformerFactory transformerFactory;
 
   public Shaihulud(
       @NotNull GeneratorFactory generatorFactory,
@@ -34,6 +35,7 @@ public class Shaihulud {
     this.readerFactory = readerFactory;
     this.parserFactory = parserFactory;
     this.resultStoreFactory = resultStoreFactory;
+    transformerFactory = new TransformerFactory();
   }
 
   @SuppressWarnings("unchecked")
@@ -51,13 +53,14 @@ public class Shaihulud {
         Reader configReader =
             readerFactory.createOptional(options.getConfig())
     ) {
+      Console console = new Console();
       Map<String, Object> specification = parserFactory
           .create(options.getParserType(), schemaReader)
           .parse(specificationReader);
 
       if (transformationReader != null) {
-        specification = (Map<String, Object>) new TransformerFactory()
-            .create()
+        specification = (Map<String, Object>) transformerFactory
+            .create(console)
             .transform(transformationReader, specification);
       }
 
@@ -66,7 +69,7 @@ public class Shaihulud {
 
       Map<String, Object> config = readConfig(configReader);
 
-      Generator generator = new GeneratorFactory().create();
+      Generator generator = generatorFactory.create();
       generator.generate(specification, template, resultStore, config);
     }
   }

@@ -9,9 +9,9 @@ import ru.dab.shaihulud.utils.MarkedCaseChanger;
 
 import java.util.List;
 
-public class PascalCase extends BaseFunction {
-  public PascalCase() {
-    super("pascal_case",
+public class CamelCase extends BaseFunction {
+  public CamelCase() {
+    super("camel_case",
           ArgumentConstraints.typeOf(JmesPathType.STRING, JmesPathType.NULL));
   }
 
@@ -22,7 +22,7 @@ public class PascalCase extends BaseFunction {
     if (string == null) {
       return runtime.createNull();
     }
-    String result = "\\u" + string
+    String result = "\\l" + string
         .replaceAll("[^\\w]+", "\\\\u\\\\L");
     result = MarkedCaseChanger.changeCase(result);
     return runtime.createString(result);

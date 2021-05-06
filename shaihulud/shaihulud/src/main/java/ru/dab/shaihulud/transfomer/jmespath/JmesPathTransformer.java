@@ -5,26 +5,48 @@ import io.burt.jmespath.JmesPath;
 import io.burt.jmespath.RuntimeConfiguration;
 import io.burt.jmespath.function.FunctionRegistry;
 import org.jetbrains.annotations.NotNull;
+import ru.dab.shaihulud.Console;
 import ru.dab.shaihulud.transfomer.Transformer;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.util.HashMap;
+import java.util.Map;
 
 public class JmesPathTransformer implements Transformer {
+  private final Console console;
+
+  public JmesPathTransformer(Console console) {
+    this.console = console;
+  }
+
   @Override
   public @NotNull Object transform(
       @NotNull Reader scriptReader, @NotNull Object data)
       throws IOException {
+    HashMap<String, Object> variablesByName = new HashMap<>();
+    Map<String, Expression<?>> expressionsByName = new HashMap<>();
     FunctionRegistry customFunctions = FunctionRegistry
         .defaultRegistry()
         .extend(
-            new Debug(),
+            new Concat(),
+            new Debug(console),
+            new CreateSet(),
+            new Property(),
             new Entries(),
+            new If(),
+            new Halt(),
             new HaltEmpty(),
             new ReplaceAll(),
             new UpperCaseFirst(),
+            new CamelCase(),
             new PascalCase(),
-            new KebabCase());
+            new KebabCase(),
+            new SetVariable(variablesByName),
+            new SetMultipleVariables(variablesByName),
+            new GetVariable(variablesByName),
+            new DefineExpression(expressionsByName),
+            new ApplyExpression(expressionsByName));
     RuntimeConfiguration configuration = new RuntimeConfiguration.Builder()
         .withFunctionRegistry(customFunctions)
         .build();
