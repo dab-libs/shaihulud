@@ -34,6 +34,7 @@ public class JmesPathTransformer implements Transformer {
             new CreateSet(),
             new Property(),
             new Entries(),
+            new EmptyArray(),
             new If(),
             new Halt(),
             new HaltEmpty(),
