@@ -1,1 +1,1 @@
-# shai-hulud
+Code genarating tool

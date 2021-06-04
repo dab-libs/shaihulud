@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="jar" build-on-make="true" name="shaihulud:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts</output-path>
+    <output-path>$PROJECT_DIR$/target/artifacts</output-path>
     <root id="archive" name="shaihulud.jar">
       <element id="module-output" name="shaihulud" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/commons-digester/commons-digester/1.8.1/commons-digester-1.8.1.jar" path-in-jar="/" />

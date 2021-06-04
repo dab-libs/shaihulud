@@ -1,5 +1,4 @@
-shaihulud/lib/
-shaihulud/.idea/workspace.xml
-shaihulud/shaihulud/target/
-shaihulud/out/
-shaihulud/shaihulud/out/
+lib/
+.idea/workspace.xml
+target/
+out/
