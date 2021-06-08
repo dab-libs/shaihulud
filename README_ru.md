@@ -1,6 +1,4 @@
-<div align="right">
 [English version](README.md)
-</div>
 
 # Генератор кода на основе JSON или YAML
 
