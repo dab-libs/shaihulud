@@ -4,7 +4,7 @@
 
 shaihulud is a tool written in Java designed to generate code (or text) from JSON or YAML data according to a set of templates. shaihulud generates a code in the following order:
 1. Parses the given json (yaml) file, obtaining a tree data structure (below: *original data*).
-1. Validates the *original data* against the specified [*json schema*] (https://json-schema.org/).
+1. Validates the *original data* against the specified [*json schema*](https://json-schema.org/).
    * If a *json schema* is not specified, the step is skipped.
 1. Sets default values in the *orginal data* tree according to the specified *json schema*.
    * If a *json-schema* is not specified, the step is skipped.
