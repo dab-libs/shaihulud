@@ -1,6 +1,7 @@
-<div style="text-align: right">
-[English version](file://README.md)
+<div align="right">
+[English version](README.md)
 </div>
+
 # Генератор кода на основе JSON или YAML
 
 shaihulud - это инструмент, написанный на Java, предназначенный для генерации кода (ил текста) на основе данных в формате JSON или YAML в соответствии с набором шаблонов. shaihulud выполняет генерацию в следующем порядке:
