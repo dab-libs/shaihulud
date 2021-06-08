@@ -1,20 +1,21 @@
 [Русская версия](README_ru.md)
 
-# Преобразователь JSON или YAML
+# Code generator, based on JSON and YAML 
 
-shaihulud - это инструмент, написанный на Java, предназначенный для преобразования данных из формата JSON или YAML в один или несколько текстовых файлов в соответствии с набором шаблонов. shaihulud выполняет такое преобразование преобразование в следующем порядке:
-1. Разбирает данный json (yaml) файл, получая древовидную структуру данных (далее: *исходные данные*).
-1. Проверяет (валидирует) *исходные данные* на соответствие заданной [*json-схеме*](https://json-schema.org/).
-   * Если *json-схема* не задана, то этап пропускается.
-1. Устанавливает в дереве *исходных данных* значения по умолчанию в соответствии с заданной *json-схемой* (этап пропускается, если *json-схема* не задана).
-   * Если *json-схема* не задана, то этап пропускается.
-1. Выполняет на *исходных данных* запрос на языке [JEMSpath](https://jmespath.org/), получая *преобразованные данные*.
-   * Если файл с запросом JEMSpath не задан, то в качестве *преобразованных данных* берет *исходные данные*.
-1. Создает в заданной папке один или несколько текстовых файлов с помощью шаблонизатора [Pebble](https://pebbletemplates.io/), которому передает *преобразованные данные* и набор twig-шаблонов.
+shaihulud is a tool written in Java designed to generate code (or text) from JSON or YAML data according to a set of templates. shaihulud generates a code in the following order:
+1. Parses the given json (yaml) file, obtaining a tree data structure (below: *original data*).
+1. Validates the *original data* against the specified [*json schema*] (https://json-schema.org/).
+   * If a *json schema* is not specified, the step is skipped.
+1. Sets default values in the *orginal data* tree according to the specified *json schema*.
+   * If a *json-schema* is not specified, the step is skipped.
+1. Executes a query on the *orginal data* in the [JEMSpath language](https://jmespath.org/), obtaining the *transformed data*.
+   * If the file with the JEMSpath query is not specified, then the *original data* is taken as the *transformed data*.
+1. Creates one or more text files in the specified folder using the [Pebble template engine](https://pebbletemplates.io/), to which it uses the *transformed data* and a bundle of TWIG templates.
 
-# Запуск
 
-shaihulud распрастраняется в виде jar-файла. Он запускается из комадной строки следующим образом:
+# Usage
+
+shaihulud is distributed as a jar file. It is launched in the command line as follows:
 
 `$ java -jar shaihulud.jar [-c <PATH>] (-j <PATH> | -y <PATH>) [-s <PATH>] -r <DIR> -t <NAME> [-out <DIR>]`
 
@@ -30,4 +31,4 @@ shaihulud распрастраняется в виде jar-файла. Он за
 -t,--transform <PATH> | Использует <PATH> как путь для чтения запроса на языке [JEMSpath](https://jmespath.org/)
 -r,--root <DIR> | Использует <DIR> как папку из которой будут читаться файлы шаблонов [Twig](https://pebbletemplates.io/)
 -m,--main <NAME> | Использует <NAME> как название главного файла шаблонов [Twig](https://pebbletemplates.io/)
--o,--out <DIR> | Использует <DIR> как папку, куда будут записаны текстовые файлы, полученные в результате работы программы
+-o,--out <DIR> | Использует <DIR> как папку, куда будут записаны сгенерированные текстовые файлы
