@@ -101,7 +101,7 @@ class ProgramOptionsFactory {
     options.addOption(
         Option.builder("h")
               .longOpt(HELP)
-              .desc("print this message.")
+              .desc("Prints this message.")
               .build());
     options.addOption(
         Option.builder("s")
@@ -110,7 +110,7 @@ class ProgramOptionsFactory {
               .hasArg()
               .argName("PATH")
               .type(String.class)
-              .desc("use a given PATH as a path to read a JSON-schema file")
+              .desc("Uses a given PATH as a path to read a JSON-schema file")
               .build());
     OptionGroup spec = new OptionGroup()
         .addOption(
@@ -120,7 +120,7 @@ class ProgramOptionsFactory {
                   .argName("PATH")
                   .type(String.class)
                   .desc(
-                      "use a given PATH as a path to read an " +
+                      "Uses a given PATH as a path to read an " +
                       "YAML specification file")
                   .build())
         .addOption(
@@ -130,7 +130,7 @@ class ProgramOptionsFactory {
                   .argName("PATH")
                   .type(String.class)
                   .desc(
-                      "use a given PATH as a path to read a JSON" +
+                      "Uses a given PATH as a path to read a JSON" +
                       " specification file")
                   .build());
     spec.setRequired(true);
@@ -142,7 +142,7 @@ class ProgramOptionsFactory {
               .hasArg()
               .argName("PATH")
               .type(String.class)
-              .desc("use a given PATH as a path to a transformation script")
+              .desc("Uses a given PATH as a path to a transformation script")
               .build());
     options.addOption(
         Option.builder("r")
@@ -152,7 +152,7 @@ class ProgramOptionsFactory {
               .argName("DIR")
               .type(String.class)
               .required()
-              .desc("use a given DIR as a directory " +
+              .desc("Uses a given DIR as a directory " +
                     "where template files will be read")
               .build());
     options.addOption(
@@ -163,7 +163,7 @@ class ProgramOptionsFactory {
               .argName("NAME")
               .type(String.class)
               .required()
-              .desc("use a given NAME as a main template file name")
+              .desc("Uses a given NAME as a main template file name")
               .build());
     options.addOption(
         Option.builder("o")
@@ -172,7 +172,7 @@ class ProgramOptionsFactory {
               .hasArg()
               .argName("DIR")
               .type(String.class)
-              .desc("use a given DIR as a directory " +
+              .desc("Uses a given DIR as a directory " +
                     "where generated files will be written")
               .build());
     options.addOption(
@@ -182,7 +182,7 @@ class ProgramOptionsFactory {
               .hasArg()
               .argName("PATH")
               .type(String.class)
-              .desc("use a given PATH as a path to read a JSON config file")
+              .desc("Uses a given PATH as a path to read a JSON config file")
               .build());
     return options;
   }

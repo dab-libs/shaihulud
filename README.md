@@ -2,7 +2,7 @@
 
 # Code generator, based on JSON and YAML 
 
-shaihulud is a tool written in Java designed to generate code (or text) from JSON or YAML data according to a set of templates. shaihulud generates a code in the following order:
+**shaihulud** is a tool written in Java designed to generate code (or text) from JSON or YAML data according to a set of templates. **shaihulud** generates a code in the following order:
 1. Parses the given json (yaml) file, obtaining a tree data structure (below: *original data*).
 1. Validates the *original data* against the specified [*json schema*](https://json-schema.org/).
    * If a *json schema* is not specified, the step is skipped.
@@ -15,20 +15,20 @@ shaihulud is a tool written in Java designed to generate code (or text) from JSO
 
 # Usage
 
-shaihulud is distributed as a jar file. It is launched in the command line as follows:
+**shaihulud** is distributed as a jar file. It is launched in the command line as follows:
 
 `$ java -jar shaihulud.jar [-c <PATH>] (-j <PATH> | -y <PATH>) [-s <PATH>] -r <DIR> -t <NAME> [-out <DIR>]`
 
-Параматры командной строки представлены в таблице:
+Command line parameters are introduced in the table:
 
-Параметр | Назначение
+Parameter | Description
 ---------|----------------------------------------
--h,--help | Отображает справку по запуску
--c,--config <PATH> | Использует <PATH> как путь для чтения кофигурационных данных из JSON-файла
--j,--json <PATH> | Использует <PATH> как путь для чтения данных из JSON-файла
--y,--yaml <PATH> | Использует <PATH> как путь для чтения данных из YAML-файла
--s,--schema <PATH> | Использует <PATH> как путь для чтения JSON-схему из файла
--t,--transform <PATH> | Использует <PATH> как путь для чтения запроса на языке [JEMSpath](https://jmespath.org/)
--r,--root <DIR> | Использует <DIR> как папку из которой будут читаться файлы шаблонов [Twig](https://pebbletemplates.io/)
--m,--main <NAME> | Использует <NAME> как название главного файла шаблонов [Twig](https://pebbletemplates.io/)
--o,--out <DIR> | Использует <DIR> как папку, куда будут записаны сгенерированные текстовые файлы
+-h,--help | Prints a help
+-j,--json <PATH> | Uses a given PATH as a path to read a JSON specification file
+-y,--yaml <PATH> | Uses a given PATH as a path to read an YAML specification file
+-s,--schema <PATH> | Uses a given PATH as a path to read a JSON-schema file
+-t,--transform <PATH> | Uses a given PATH as a path to a transformation script in [JEMSpath](https://jmespath.org/)
+-r,--root <DIR> | Uses a given DIR as a directory where [Twig](https://pebbletemplates.io/) template files will be read
+-m,--main <NAME> | Uses a given NAME as a main [Twig](https://pebbletemplates.io/) template file name
+-o,--out <DIR> | Uses a given DIR as a directory where generated files will be written
+-c,--config <PATH> | Uses a given PATH as a path to read a JSON config file
