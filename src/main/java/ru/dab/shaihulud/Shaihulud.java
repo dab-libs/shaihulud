@@ -15,6 +15,7 @@ import ru.dab.shaihulud.specification.ParserException;
 import ru.dab.shaihulud.specification.ParserFactory;
 import ru.dab.shaihulud.transfomer.TransformerFactory;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.Map;
@@ -30,7 +31,7 @@ public class Shaihulud {
       @NotNull GeneratorFactory generatorFactory,
       @NotNull ReaderFactory readerFactory,
       @NotNull ParserFactory parserFactory,
-      @NotNull ResultStoreFactory resultStoreFactory) throws IOException {
+      @NotNull ResultStoreFactory resultStoreFactory) {
     this.generatorFactory = generatorFactory;
     this.readerFactory = readerFactory;
     this.parserFactory = parserFactory;
@@ -43,7 +44,7 @@ public class Shaihulud {
       throws IOException, ParserException, ConfigException {
     try (
         Reader schemaReader =
-            readerFactory.createOptional(options.getSchema());
+            createSchemaReader(options.getSchema());
         Reader specificationReader =
             readerFactory.create(options.getSpecification());
         Reader transformationReader =
@@ -71,6 +72,22 @@ public class Shaihulud {
 
       Generator generator = generatorFactory.create();
       generator.generate(specification, template, resultStore, config);
+    }
+  }
+
+  @Nullable
+  private Reader createSchemaReader(@Nullable String schemaPath)
+      throws FileNotFoundException {
+    if (schemaPath != null) {
+      return readerFactory.createOptional(schemaPath);
+    }
+    else {
+      try {
+        return readerFactory.createOptional("schema.json");
+      }
+      catch (FileNotFoundException e) {
+        return null;
+      }
     }
   }
 
