@@ -16,6 +16,16 @@ class ProgramOptionsFactory {
   public static final String OUT       = "out";
   public static final String CONFIG    = "config";
 
+  private final String jarName;
+
+  public ProgramOptionsFactory() {
+    this("shaihulud");
+  }
+
+  public ProgramOptionsFactory(String jarName) {
+    this.jarName = jarName;
+  }
+
   public @NotNull ShaihuludOptions create(
       @NotNull String[] commandLineArguments)
       throws WrongOptionsException, NeedHelpException {
@@ -91,7 +101,7 @@ class ProgramOptionsFactory {
     Options options = createOptions();
     HelpFormatter helpFormatter = new HelpFormatter();
     helpFormatter.printHelp(
-        "java -jar shaihulud.jar [-s <PATH>] (-j <PATH> | -y <PATH>)" +
+        "java -jar " + jarName + ".jar [-s <PATH>] (-j <PATH> | -y <PATH>)" +
         "          -r <DIR> -t <NAME> [-out <DIR>]",
         options);
   }
