@@ -77,7 +77,7 @@ public class Shaihulud {
 
   @Nullable
   private Reader createSchemaReader(@Nullable String schemaPath)
-      throws FileNotFoundException {
+      throws IOException {
     if (schemaPath != null) {
       return readerFactory.createOptional(schemaPath);
     }

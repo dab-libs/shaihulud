@@ -23,9 +23,7 @@ public class FileTemplateBundle implements TemplateBundle {
 
   @Override
   public @NotNull Reader getTemplate(@NotNull String name) throws IOException {
-    String resourceName = name
-        .replace('/', File.separatorChar)
-        .replace('\\', File.separatorChar);
+    String resourceName = name.replace('\\', '/');
 
     File templateFile = new File(root, resourceName);
 
