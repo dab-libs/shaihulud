@@ -15,6 +15,7 @@ class ProgramOptionsFactory {
   public static final String MAIN      = "main";
   public static final String OUT       = "out";
   public static final String CONFIG    = "config";
+  public static final String QUIET     = "quiet";
 
   private final String jarName;
 
@@ -43,7 +44,8 @@ class ProgramOptionsFactory {
         commandLine.getOptionValue(SCHEMA), getSpecificationFormat(commandLine),
         getSpecification(commandLine), commandLine.getOptionValue(TRANSFORM),
         commandLine.getOptionValue(ROOT), commandLine.getOptionValue(MAIN),
-        commandLine.getOptionValue(OUT), commandLine.getOptionValue(CONFIG));
+        commandLine.getOptionValue(OUT), commandLine.getOptionValue(CONFIG),
+        commandLine.hasOption(QUIET));
   }
 
   private @NotNull String getSpecification(
@@ -193,6 +195,12 @@ class ProgramOptionsFactory {
               .argName("PATH")
               .type(String.class)
               .desc("use a given PATH as a path to read a JSON config file")
+              .build());
+    options.addOption(
+        Option.builder("q")
+              .longOpt(QUIET)
+              .required(false)
+              .desc("don't print the greeting")
               .build());
     return options;
   }

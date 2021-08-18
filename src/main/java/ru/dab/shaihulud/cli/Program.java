@@ -17,11 +17,12 @@ public class Program {
     String jarName = getJarName();
     String version = getVersion();
 
-    printGreeting(jarName, version);
-
-    ShaihuludOptions options = createOptions(args, jarName);
+    ShaihuludOptions options = createOptions(args, jarName, version);
     if (options == null) {
       return;
+    }
+    if (!options.isQuiet()) {
+      printGreeting(jarName, version);
     }
 
     try {
@@ -70,12 +71,14 @@ public class Program {
   }
 
   private static @Nullable ShaihuludOptions createOptions(String[] args,
-                                                          String jarName) {
+                                                          String jarName,
+                                                          String version) {
     ProgramOptionsFactory optionsFactory = new ProgramOptionsFactory(jarName);
     try {
       return optionsFactory.create(args);
     }
     catch (NeedHelpException e) {
+      printGreeting(jarName, version);
       optionsFactory.printHelp();
     }
     catch (WrongOptionsException e) {

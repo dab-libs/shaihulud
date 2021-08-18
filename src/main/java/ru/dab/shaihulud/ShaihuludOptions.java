@@ -13,12 +13,13 @@ public class ShaihuludOptions {
   private final @NotNull  String     mainTemplate;
   private final @Nullable String     outDirectory;
   private final @Nullable String     config;
+  private final           boolean    quiet;
 
   public ShaihuludOptions(
       @Nullable String schema, @NotNull ParserType parserType,
       @NotNull String specification, @Nullable String transformation,
       @NotNull String templateRoot, @NotNull String mainTemplate,
-      @Nullable String outDirectory, @Nullable String config) {
+      @Nullable String outDirectory, @Nullable String config, boolean quiet) {
     this.specification = specification;
     this.parserType = parserType;
     this.schema = schema;
@@ -27,6 +28,7 @@ public class ShaihuludOptions {
     this.mainTemplate = mainTemplate;
     this.outDirectory = outDirectory;
     this.config = config;
+    this.quiet = quiet;
   }
 
   public @NotNull String getSpecification() {
@@ -59,5 +61,9 @@ public class ShaihuludOptions {
 
   public @Nullable String getTransformation() {
     return transformation;
+  }
+
+  public boolean isQuiet() {
+    return quiet;
   }
 }
