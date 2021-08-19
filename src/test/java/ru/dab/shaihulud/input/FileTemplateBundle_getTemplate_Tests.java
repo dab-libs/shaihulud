@@ -45,7 +45,7 @@ public class FileTemplateBundle_getTemplate_Tests {
     assertEquals("template", templateBundle.getMain());
 
     try {
-      Reader template = templateBundle.getTemplate("dir.template");
+      Reader template = templateBundle.getTemplate("dir/template");
       assertNotNull(template);
       assertTrue(template.read(new char[1024]) > 0);
     }

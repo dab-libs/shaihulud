@@ -13,7 +13,7 @@ class ShaihuludOptionsFactory_Tests {
         "-y", "spec.yaml",
         "-s", "schema.json",
         "-r", "templates",
-        "-t", "template",
+        "-m", "main_template",
         "-out", "outDir"
     };
     try {
@@ -24,7 +24,7 @@ class ShaihuludOptionsFactory_Tests {
           .getParserType());
       assertEquals("schema.json", shaihuludOptions.getSchema());
       assertEquals("templates", shaihuludOptions.getRoot());
-      assertEquals("template", shaihuludOptions.getMain());
+      assertEquals("main_template", shaihuludOptions.getMain());
       assertEquals("outDir", shaihuludOptions.getOutDirectory());
     }
     catch (WrongOptionsException | NeedHelpException e) {

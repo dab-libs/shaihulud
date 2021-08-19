@@ -14,16 +14,20 @@ public class TemplateBundleFactory {
   public @NotNull TemplateBundle create(
       @NotNull String root, @NotNull String main)
       throws IOException {
-    FileTemplateBundle fileBundle = new FileTemplateBundle(root, main);
-    this.checkTemplateBundle(fileBundle);
-
-    if (root.startsWith("/") || root.startsWith("\\")) {
-      throw new FileNotFoundException("Invalid template root '" + root + "'");
+    TemplateBundle fileBundle = new FileTemplateBundle(root, main);
+    try {
+      this.checkTemplateBundle(fileBundle);
+      return fileBundle;
     }
+    catch (IOException e) {
+      if (root.startsWith("/") || root.startsWith("\\")) {
+        throw new FileNotFoundException("Invalid template root '" + root + "'");
+      }
 
-    TemplateBundle resourceBundle = new ResourceTemplateBundle(root, main);
-    this.checkTemplateBundle(resourceBundle);
-    return resourceBundle;
+      TemplateBundle resourceBundle = new ResourceTemplateBundle(root, main);
+      this.checkTemplateBundle(resourceBundle);
+      return resourceBundle;
+    }
   }
 
   private void checkTemplateBundle(
