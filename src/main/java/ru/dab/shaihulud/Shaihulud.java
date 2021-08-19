@@ -9,8 +9,8 @@ import ru.dab.shaihulud.generator.GeneratorFactory;
 import ru.dab.shaihulud.generator.ResultStore;
 import ru.dab.shaihulud.generator.TemplateBundle;
 import ru.dab.shaihulud.io.ReaderFactory;
-import ru.dab.shaihulud.io.ResultStoreFactory;
-import ru.dab.shaihulud.io.TemplateBundleFactory;
+import ru.dab.shaihulud.generator.io.ResultStoreFactory;
+import ru.dab.shaihulud.generator.io.TemplateBundleFactory;
 import ru.dab.shaihulud.specification.ParserException;
 import ru.dab.shaihulud.specification.ParserFactory;
 import ru.dab.shaihulud.transfomer.TransformerFactory;
@@ -21,22 +21,28 @@ import java.io.Reader;
 import java.util.Map;
 
 public class Shaihulud {
-  private final @NotNull GeneratorFactory   generatorFactory;
-  private final @NotNull ReaderFactory      readerFactory;
-  private final @NotNull ParserFactory      parserFactory;
-  private final @NotNull ResultStoreFactory resultStoreFactory;
-  private final @NotNull TransformerFactory transformerFactory;
+  private final @NotNull GeneratorFactory      generatorFactory;
+  private final @NotNull ReaderFactory         readerFactory;
+  private final @NotNull ParserFactory         parserFactory;
+  private final @NotNull TransformerFactory    transformerFactory;
+  private final @NotNull TemplateBundleFactory templateBundleFactory;
+  private final @NotNull ResultStoreFactory    resultStoreFactory;
+  private final @NotNull Console               console = new Console();
+
 
   public Shaihulud(
       @NotNull GeneratorFactory generatorFactory,
       @NotNull ReaderFactory readerFactory,
       @NotNull ParserFactory parserFactory,
+      @NotNull TransformerFactory transformerFactory,
+      @NotNull TemplateBundleFactory templateBundleFactory,
       @NotNull ResultStoreFactory resultStoreFactory) {
     this.generatorFactory = generatorFactory;
     this.readerFactory = readerFactory;
     this.parserFactory = parserFactory;
+    this.transformerFactory = transformerFactory;
+    this.templateBundleFactory = templateBundleFactory;
     this.resultStoreFactory = resultStoreFactory;
-    transformerFactory = new TransformerFactory();
   }
 
   @SuppressWarnings("unchecked")
@@ -54,7 +60,6 @@ public class Shaihulud {
         Reader configReader =
             readerFactory.createOptional(options.getConfig())
     ) {
-      Console console = new Console();
       Map<String, Object> specification = parserFactory
           .create(options.getParserType(), schemaReader)
           .parse(specificationReader);
@@ -65,13 +70,13 @@ public class Shaihulud {
             .transform(transformationReader, specification);
       }
 
-      TemplateBundle template = new TemplateBundleFactory()
+      TemplateBundle templateBundle = templateBundleFactory
           .create(options.getRoot(), options.getMain());
 
       Map<String, Object> config = readConfig(configReader);
 
       Generator generator = generatorFactory.create();
-      generator.generate(specification, template, resultStore, config);
+      generator.generate(specification, templateBundle, resultStore, config);
     }
   }
 

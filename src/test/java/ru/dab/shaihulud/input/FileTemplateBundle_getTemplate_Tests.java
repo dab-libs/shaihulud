@@ -3,7 +3,8 @@ package ru.dab.shaihulud.input;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
-import ru.dab.shaihulud.io.FileTemplateBundle;
+import ru.dab.shaihulud.generator.TemplateBundle;
+import ru.dab.shaihulud.generator.io.TemplateBundleFactory;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -11,13 +12,18 @@ import java.io.Reader;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class FileTemplateBundle_getTemplate_Tests {
-  private FileTemplateBundle templateBundle;
+  private TemplateBundle templateBundle;
 
   @BeforeEach
   public void setup() {
-    templateBundle = new FileTemplateBundle(
-        "src/test/resources/FileTemplateBundle_getTemplate_Tests",
-        "template");
+    try {
+      templateBundle = new TemplateBundleFactory().create(
+          "src/test/resources/FileTemplateBundle_getTemplate_Tests",
+          "template");
+    }
+    catch (IOException e) {
+      fail();
+    }
   }
 
   @Test

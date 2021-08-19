@@ -1,20 +1,22 @@
-package ru.dab.shaihulud.io;
+package ru.dab.shaihulud.generator.io;
 
 import org.jetbrains.annotations.NotNull;
 import ru.dab.shaihulud.generator.TemplateBundle;
+import ru.dab.shaihulud.io.ReaderFactory;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 
-public class ResourceTemplateBundle implements TemplateBundle {
+class ResourceTemplateBundle implements TemplateBundle {
   private final @NotNull String prefix;
   private final @NotNull String mainTemplate;
 
   public ResourceTemplateBundle(
       @NotNull String prefix, @NotNull String mainTemplate) {
     prefix = prefix.replace('\\', '/');
-    if (!prefix.endsWith("/"))
+    if (!prefix.endsWith("/")) {
       prefix = prefix + '/';
+    }
     this.prefix = prefix;
     this.mainTemplate = this.prefix + mainTemplate.replace('\\', '/');
   }
@@ -28,10 +30,10 @@ public class ResourceTemplateBundle implements TemplateBundle {
   public @NotNull Reader getTemplate(@NotNull String name) throws IOException {
     String path = prefix + name.replace('\\', '/');
     InputStream inputStream =
-        ReaderFactory.class.getClassLoader().getResourceAsStream("/" + path);
+        ReaderFactory.class.getClassLoader().getResourceAsStream(path);
     if (inputStream == null) {
-      throw new FileNotFoundException("Invalid file path");
+      throw new FileNotFoundException("Invalid resource path '" + path + "'");
     }
     return new InputStreamReader(inputStream, StandardCharsets.UTF_8);
- }
+  }
 }

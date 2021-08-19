@@ -1,4 +1,4 @@
-package ru.dab.shaihulud.io;
+package ru.dab.shaihulud.generator.io;
 
 import org.jetbrains.annotations.NotNull;
 import ru.dab.shaihulud.generator.TemplateBundle;
@@ -6,7 +6,7 @@ import ru.dab.shaihulud.generator.TemplateBundle;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 
-public class FileTemplateBundle implements TemplateBundle {
+class FileTemplateBundle implements TemplateBundle {
   private final @NotNull File   root;
   private final @NotNull String mainTemplate;
 
