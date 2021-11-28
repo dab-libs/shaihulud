@@ -18,6 +18,7 @@ public class DefineExpression extends BaseFunction {
   public DefineExpression(@NotNull Map<String, Expression<?>> expressionsByName) {
     super("expression",
           typeOf(JmesPathType.STRING),
+          anyValue(),
           expression(),
           anyValue());
     this.expressionsByName = expressionsByName;
@@ -27,13 +28,13 @@ public class DefineExpression extends BaseFunction {
   protected <T> T callFunction(Adapter<T> runtime,
                                List<FunctionArgument<T>> arguments) {
     String name = runtime.toString(arguments.get(0).value());
-    Expression<T> expression = arguments.get(1).expression();
+    Expression<T> expression = arguments.get(2).expression();
     if (expression != null) {
       expressionsByName.put(name, expression);
     }
     else {
       expressionsByName.remove(name);
     }
-    return arguments.get(2).value();
+    return arguments.get(3).value();
   }
 }
