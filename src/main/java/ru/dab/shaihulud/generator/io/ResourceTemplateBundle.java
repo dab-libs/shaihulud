@@ -18,7 +18,7 @@ class ResourceTemplateBundle implements TemplateBundle {
       prefix = prefix + '/';
     }
     this.prefix = prefix;
-    this.mainTemplate = this.prefix + mainTemplate.replace('\\', '/');
+    this.mainTemplate = mainTemplate.replace('\\', '/');
   }
 
   @Override
