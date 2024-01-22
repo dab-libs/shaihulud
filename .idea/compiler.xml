@@ -9,8 +9,5 @@
         <module name="shaihulud" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="shaihulud" target="8" />
-    </bytecodeTargetLevel>
   </component>
 </project>
