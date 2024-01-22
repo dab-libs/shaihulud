@@ -7,7 +7,7 @@ import java.util.List;
 
 public class LineDetector_detect_Tests {
 
-  private LineDetector detector =
+  private final LineDetector detector =
       new LineDetector("<--WriteFile\\s*\"([\\w\\.]+)\"\\s*-->", "$1");
 
   @Test
