@@ -6,12 +6,14 @@ import ru.dab.shaihulud.generator.ResultStore;
 import java.io.*;
 
 class FileResultStore implements ResultStore {
-  private final @NotNull File        root;
+  public static final String STD_OUT = "std_out";
+  private final @NotNull File root;
   private final @NotNull MultiWriter multiWriter;
 
   public FileResultStore(@NotNull File root) {
     this.root = root;
     multiWriter = new MultiWriter();
+    multiWriter.subscribe(this::switchTo);
   }
 
   @Override
@@ -21,6 +23,9 @@ class FileResultStore implements ResultStore {
 
   @Override
   public void switchTo(@NotNull String fileName) throws IOException {
+    if (fileName.equals(STD_OUT)) {
+      multiWriter.setWriter(multiWriter.createSystemOutWriter());
+    }
     String normalizedFileName = fileName
         .replace('/', File.separatorChar)
         .replace('\\', File.separatorChar);
@@ -32,12 +37,9 @@ class FileResultStore implements ResultStore {
     multiWriter.setWriter(new BufferedWriter(new FileWriter(file)));
   }
 
-  public void switchToSystemOut() throws IOException {
-    multiWriter.setWriter(multiWriter.createSystemOutWriter());
-  }
-
   @Override
   public void close() throws IOException {
+    multiWriter.unsubscribe(this::switchTo);
     multiWriter.flush();
     multiWriter.close();
   }

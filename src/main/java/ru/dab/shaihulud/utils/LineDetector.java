@@ -15,7 +15,7 @@ public class LineDetector {
 
   public LineDetector(@NotNull String detectionRegex,
                       @NotNull String targetReplacement) {
-    detectionPattern = Pattern.compile(detectionRegex);
+    detectionPattern = Pattern.compile(".*" + detectionRegex, Pattern.DOTALL);
     this.targetReplacement = targetReplacement;
   }
 
@@ -41,10 +41,7 @@ public class LineDetector {
     String string = buffer.toString();
     Matcher matcher = detectionPattern.matcher(string);
     if (matcher.find()) {
-      Matcher groupMatcher = detectionPattern.matcher(matcher.group());
-      if (groupMatcher.find()) {
-        return groupMatcher.replaceAll(targetReplacement);
-      }
+      return matcher.replaceAll(targetReplacement);
     }
     return null;
   }
