@@ -1,4 +1,4 @@
-package ru.dab.shaihulud.generator;
+package ru.dab.shaihulud.generator.pebble;
 
 import com.mitchellbosecke.pebble.PebbleEngine;
 import com.mitchellbosecke.pebble.template.PebbleTemplate;
@@ -7,8 +7,6 @@ import org.jetbrains.annotations.Nullable;
 import ru.dab.shaihulud.generator.Generator;
 import ru.dab.shaihulud.generator.ResultStore;
 import ru.dab.shaihulud.generator.TemplateBundle;
-import ru.dab.shaihulud.generator.pebble.Extension;
-import ru.dab.shaihulud.generator.pebble.Loader;
 
 import java.io.IOException;
 import java.util.HashMap;
