@@ -1,7 +1,6 @@
 package ru.dab.shaihulud.cli;
 
 import org.json.JSONObject;
-import org.json.JSONString;
 import ru.dab.shaihulud.Console;
 import ru.dab.shaihulud.io.ReaderFactory;
 import ru.dab.shaihulud.specification.JsonParser;
@@ -15,7 +14,7 @@ import java.util.Map;
 
 public class Transform {
   public static void main(String[] args) throws IOException, ParserException {
-    Parser parser = new JsonParser(null);
+    Parser parser = new JsonParser();
     final ReaderFactory readerFactory = new ReaderFactory();
     final Map<String, Object> data =
         parser.parse(readerFactory.create(args[1]));

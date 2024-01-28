@@ -13,10 +13,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PebbleGenerator implements Generator {
+  private final @NotNull TemplateBundle templateBundle;
+  private final @NotNull ResultStore    resultStore;
+
+  public PebbleGenerator(@NotNull TemplateBundle templateBundle,
+                         @NotNull ResultStore resultStore) {
+    this.templateBundle = templateBundle;
+    this.resultStore = resultStore;
+  }
+
   @Override
   public void generate(@NotNull Map<String, Object> specification,
-                       @NotNull TemplateBundle templateBundle,
-                       @NotNull ResultStore resultStore,
                        @Nullable Map<String, Object> config)
       throws IOException {
     PebbleEngine engine = new PebbleEngine

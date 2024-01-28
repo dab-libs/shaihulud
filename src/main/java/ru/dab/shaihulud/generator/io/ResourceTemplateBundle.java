@@ -7,7 +7,7 @@ import ru.dab.shaihulud.io.ReaderFactory;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 
-class ResourceTemplateBundle implements TemplateBundle {
+public class ResourceTemplateBundle implements TemplateBundle {
   private final @NotNull String prefix;
   private final @NotNull String mainTemplate;
 

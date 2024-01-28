@@ -5,15 +5,10 @@ import org.jetbrains.annotations.Nullable;
 import ru.dab.shaihulud.config.ConfigException;
 import ru.dab.shaihulud.config.ConfigParserFactory;
 import ru.dab.shaihulud.generator.Generator;
-import ru.dab.shaihulud.generator.GeneratorFactory;
-import ru.dab.shaihulud.generator.ResultStore;
-import ru.dab.shaihulud.generator.TemplateBundle;
 import ru.dab.shaihulud.io.ReaderFactory;
-import ru.dab.shaihulud.generator.io.ResultStoreFactory;
-import ru.dab.shaihulud.generator.io.TemplateBundleFactory;
+import ru.dab.shaihulud.specification.Parser;
 import ru.dab.shaihulud.specification.ParserException;
-import ru.dab.shaihulud.specification.ParserFactory;
-import ru.dab.shaihulud.transfomer.TransformerFactory;
+import ru.dab.shaihulud.transfomer.Transformer;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -21,33 +16,27 @@ import java.io.Reader;
 import java.util.Map;
 
 public class Shaihulud {
-  private final @NotNull GeneratorFactory      generatorFactory;
-  private final @NotNull ReaderFactory         readerFactory;
-  private final @NotNull ParserFactory         parserFactory;
-  private final @NotNull TransformerFactory    transformerFactory;
-  private final @NotNull TemplateBundleFactory templateBundleFactory;
-  private final @NotNull ResultStoreFactory    resultStoreFactory;
-  private final @NotNull Console               console = new Console();
-
+  private final @NotNull ShaihuludOptions options;
+  private final @NotNull ReaderFactory    readerFactory;
+  private final @NotNull Generator        generator;
+  private final @NotNull Parser           parser;
+  private final @NotNull Transformer      transformer;
 
   public Shaihulud(
-      @NotNull GeneratorFactory generatorFactory,
+      @NotNull ShaihuludOptions options,
       @NotNull ReaderFactory readerFactory,
-      @NotNull ParserFactory parserFactory,
-      @NotNull TransformerFactory transformerFactory,
-      @NotNull TemplateBundleFactory templateBundleFactory,
-      @NotNull ResultStoreFactory resultStoreFactory) {
-    this.generatorFactory = generatorFactory;
+      @NotNull Generator generator,
+      @NotNull Parser parser,
+      @NotNull Transformer transformer) {
+    this.options = options;
     this.readerFactory = readerFactory;
-    this.parserFactory = parserFactory;
-    this.transformerFactory = transformerFactory;
-    this.templateBundleFactory = templateBundleFactory;
-    this.resultStoreFactory = resultStoreFactory;
+    this.generator = generator;
+    this.parser = parser;
+    this.transformer = transformer;
   }
 
   @SuppressWarnings("unchecked")
-  public void transform(ShaihuludOptions options)
-      throws IOException, ParserException, ConfigException {
+  public void transform() throws IOException, ParserException, ConfigException {
     try (
         Reader schemaReader =
             createSchemaReader(options.getSchema());
@@ -55,28 +44,20 @@ public class Shaihulud {
             readerFactory.create(options.getSpecification());
         Reader transformationReader =
             readerFactory.createOptional(options.getTransformation());
-        ResultStore resultStore =
-            resultStoreFactory.create(options.getOutDirectory());
         Reader configReader =
             readerFactory.createOptional(options.getConfig())
     ) {
-      Map<String, Object> specification = parserFactory
-          .create(options.getParserType(), schemaReader)
-          .parse(specificationReader);
+      Map<String, Object> specification =
+          parser.parse(specificationReader, schemaReader);
 
       if (transformationReader != null) {
-        specification = (Map<String, Object>) transformerFactory
-            .create(console)
+        specification = (Map<String, Object>) transformer
             .transform(transformationReader, specification);
       }
 
-      TemplateBundle templateBundle = templateBundleFactory
-          .create(options.getRoot(), options.getMain());
-
       Map<String, Object> config = readConfig(configReader);
 
-      Generator generator = generatorFactory.create();
-      generator.generate(specification, templateBundle, resultStore, config);
+      generator.generate(specification, config);
     }
   }
 

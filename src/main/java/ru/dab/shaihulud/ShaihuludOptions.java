@@ -2,6 +2,7 @@ package ru.dab.shaihulud;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.dab.shaihulud.generator.MainTemplateKind;
 import ru.dab.shaihulud.specification.ParserType;
 
 public class ShaihuludOptions {
@@ -51,6 +52,17 @@ public class ShaihuludOptions {
     return mainTemplate;
   }
 
+  public MainTemplateKind getMainKind() {
+    switch (getExtension(getMain()).toLowerCase()) {
+      case "twig":
+        return MainTemplateKind.Twig;
+      case "mustache":
+        return MainTemplateKind.Mustache;
+      default:
+        return MainTemplateKind.Unknown;
+    }
+  }
+
   public @Nullable String getOutDirectory() {
     return outDirectory;
   }
@@ -66,4 +78,13 @@ public class ShaihuludOptions {
   public boolean isQuiet() {
     return quiet;
   }
+
+  private String getExtension(String fileName) {
+    int i = fileName.lastIndexOf('.');
+    if (i < 0) {
+      return "";
+    }
+    return fileName.substring(i+1);
+  }
+
 }

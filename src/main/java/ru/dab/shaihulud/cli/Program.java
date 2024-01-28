@@ -1,17 +1,16 @@
 package ru.dab.shaihulud.cli;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.dab.shaihulud.Shaihulud;
 import ru.dab.shaihulud.ShaihuludOptions;
-import ru.dab.shaihulud.generator.GeneratorFactory;
-import ru.dab.shaihulud.generator.io.TemplateBundleFactory;
 import ru.dab.shaihulud.io.ReaderFactory;
-import ru.dab.shaihulud.generator.io.ResultStoreFactory;
-import ru.dab.shaihulud.specification.ParserFactory;
-import ru.dab.shaihulud.transfomer.TransformerFactory;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.Reader;
 import java.util.Scanner;
 
 public class Program {
@@ -28,11 +27,9 @@ public class Program {
     }
 
     try {
-      Shaihulud shaihulud = new Shaihulud(
-          new GeneratorFactory(), new ReaderFactory(), new ParserFactory(),
-          new TransformerFactory(), new TemplateBundleFactory(),
-          new ResultStoreFactory());
-      shaihulud.transform(options);
+      Injector injector = Guice.createInjector(new BingingModule(options));
+      Shaihulud shaihulud = injector.getInstance(Shaihulud.class);
+      shaihulud.transform();
     }
     catch (Throwable e) {
       System.err.println(e.getMessage());

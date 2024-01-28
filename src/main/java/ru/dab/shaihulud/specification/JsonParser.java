@@ -12,28 +12,26 @@ import java.io.Reader;
 import java.util.Map;
 
 public class JsonParser implements Parser {
-  private final @Nullable Reader     schemaReader;
-  private @Nullable       JSONObject schemaJson = null;
-
-  public JsonParser(@Nullable Reader schemaReader) {
-    this.schemaReader = schemaReader;
+  @Override
+  public @NotNull Map<String, Object> parse(@NotNull Reader specificationReader,
+                                            @NotNull Reader schemaReader)
+      throws ParserException {
+    JSONObject specification = parseJson(specificationReader);
+    validateAndSetDefaults(specification, schemaReader);
+    return specification.toMap();
   }
 
   @Override
   public @NotNull Map<String, Object> parse(@NotNull Reader specificationReader)
       throws ParserException {
     JSONObject specification = parseJson(specificationReader);
-    if (schemaReader != null) {
-      validateAndSetDefaults(specification);
-    }
     return specification.toMap();
   }
 
-  private void validateAndSetDefaults(JSONObject specification)
+  private void validateAndSetDefaults(JSONObject specification,
+                                      @NotNull Reader schemaReader)
       throws ParserException {
-    if (schemaJson == null && schemaReader != null) {
-      schemaJson = parseJson(schemaReader);
-    }
+    JSONObject schemaJson = parseJson(schemaReader);
     try {
       Schema schema = SchemaLoader
           .builder()

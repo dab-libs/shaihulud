@@ -6,7 +6,7 @@ import ru.dab.shaihulud.generator.TemplateBundle;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 
-class FileTemplateBundle implements TemplateBundle {
+public class FileTemplateBundle implements TemplateBundle {
   private final @NotNull File   root;
   private final @NotNull String mainTemplate;
 

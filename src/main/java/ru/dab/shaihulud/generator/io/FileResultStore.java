@@ -5,7 +5,7 @@ import ru.dab.shaihulud.generator.ResultStore;
 
 import java.io.*;
 
-class FileResultStore implements ResultStore {
+public class FileResultStore implements ResultStore {
   public static final String STD_OUT = "std_out";
   private final @NotNull File root;
   private final @NotNull MultiWriter multiWriter;

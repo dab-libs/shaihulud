@@ -14,10 +14,18 @@ import java.io.Writer;
 import java.util.Map;
 
 public class MustacheGenerator implements Generator {
+  private final TemplateBundle templateBundle;
+  private final ResultStore store;
+
+  public MustacheGenerator(
+      @NotNull TemplateBundle templateBundle,
+      @NotNull ResultStore store) {
+    this.templateBundle = templateBundle;
+    this.store = store;
+  }
+
   @Override
   public void generate(@NotNull Map<String, Object> specification,
-                       @NotNull TemplateBundle templateBundle,
-                       @NotNull ResultStore store,
                        @Nullable Map<String, Object> options)
       throws IOException {
     MustacheFactory mf = new DefaultMustacheFactory(
