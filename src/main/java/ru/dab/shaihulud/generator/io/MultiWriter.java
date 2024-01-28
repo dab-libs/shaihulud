@@ -2,23 +2,15 @@ package ru.dab.shaihulud.generator.io;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.dab.shaihulud.utils.LineDetector;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 class MultiWriter extends Writer {
-  private final          Object                    monitor       = new Object();
-  private final @NotNull Writer                    systemOut     =
-      new OutputStreamWriter(System.out);
-  private final          List<MultiWriterListener> listeners     =
-      new ArrayList<>();
-  private final          LineDetector              writeDetector =
-      new LineDetector("<--Write\\s*\"([\\w\\.]+)\"\\s*-->", "$1");
+  private final Object monitor   = new Object();
+  private final Writer systemOut = new OutputStreamWriter(System.out);
 
   private           boolean ignoreFirstEmptyLine = false;
   private @Nullable Writer  writer;
@@ -32,7 +24,6 @@ class MultiWriter extends Writer {
     synchronized (monitor) {
       closeWriter();
       this.writer = writer;
-      writeDetector.reset();
       ignoreFirstEmptyLine = true;
     }
   }
@@ -41,21 +32,12 @@ class MultiWriter extends Writer {
     return systemOut;
   }
 
-  public void subscribe(MultiWriterListener listener) {
-    synchronized (monitor) {
-      listeners.add(listener);
-    }
-  }
-
-  public void unsubscribe(MultiWriterListener listener) {
-    synchronized (monitor) {
-      listeners.remove(listener);
-    }
-  }
-
   @Override
   public void write(char @NotNull [] cbuf, int off, int len)
       throws IOException {
+    if (len <= 0) {
+      return;
+    }
     checkWriter();
     synchronized (monitor) {
       if (ignoreFirstEmptyLine) {
@@ -69,7 +51,6 @@ class MultiWriter extends Writer {
           return;
         }
       }
-      detectAndNotifyEvents(cbuf, off, len);
       checkWriter();
       Objects.requireNonNull(writer).write(cbuf, off, len);
     }
@@ -83,16 +64,6 @@ class MultiWriter extends Writer {
       return 1;
     }
     return 0;
-  }
-
-  private void detectAndNotifyEvents(char[] cbuf, int off, int len)
-      throws IOException {
-    List<String> files = writeDetector.detect(cbuf, off, len);
-    for (String file : files) {
-      for (MultiWriterListener listener : listeners) {
-        listener.fileChosen(file);
-      }
-    }
   }
 
   @Override

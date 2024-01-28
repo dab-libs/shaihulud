@@ -26,7 +26,7 @@ import java.io.IOException;
 import java.io.Reader;
 
 public class BingingModule extends AbstractModule {
-  private @NotNull ShaihuludOptions options;
+  private final @NotNull ShaihuludOptions options;
 
   public BingingModule(@NotNull ShaihuludOptions options) {
     this.options = options;
@@ -36,7 +36,6 @@ public class BingingModule extends AbstractModule {
     bind(ShaihuludOptions.class).toInstance(options);
     bind(ReaderFactory.class);
     bindParser();
-    bindGenerator();
     bind(Console.class);
   }
 
@@ -53,14 +52,14 @@ public class BingingModule extends AbstractModule {
     }
   }
 
-  private void bindGenerator() {
+  @Provides
+  private Generator provideGenerator(@NotNull TemplateBundle templateBundle,
+                                     @NotNull ResultStore resultStore) {
     switch (options.getMainKind()) {
       case Twig:
-        bind(Generator.class).to(PebbleGenerator.class);
-        break;
+        return new PebbleGenerator(templateBundle, resultStore);
       case Mustache:
-        bind(Generator.class).to(MustacheGenerator.class);
-        break;
+        return new MustacheGenerator(templateBundle, resultStore);
       default:
         throw new RuntimeException("Unknown template kind");
     }
@@ -76,11 +75,9 @@ public class BingingModule extends AbstractModule {
       @NotNull ReaderFactory readerFactory,
       @NotNull Generator generator,
       @NotNull Parser parser,
-      @NotNull Transformer transformer,
-      @NotNull TemplateBundle templateBundle,
-      @NotNull ResultStore resultStore) {
-    return new Shaihulud(options, readerFactory, generator, parser, transformer
-    );
+      @NotNull Transformer transformer) {
+    return new Shaihulud(options, readerFactory, generator, parser,
+                         transformer);
   }
 
   @Provides

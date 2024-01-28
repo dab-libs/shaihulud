@@ -3,6 +3,7 @@ package ru.dab.shaihulud.specification;
 import org.everit.json.schema.Schema;
 import org.everit.json.schema.loader.SchemaLoader;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -14,18 +15,19 @@ import java.util.Map;
 public class YamlParser implements Parser {
   @Override
   public @NotNull Map<String, Object> parse(
-      @NotNull Reader specificationReader, @NotNull Reader schemaReader)
+      @NotNull Reader specificationReader, @Nullable Reader schemaReader)
       throws ParserException {
     JSONObject specification = parseYaml(specificationReader);
-    validateAndSetDefaults(specification, schemaReader);
+    if (schemaReader != null) {
+      validateAndSetDefaults(specification, schemaReader);
+    }
     return specification.toMap();
   }
 
   @Override
   public @NotNull Map<String, Object> parse(@NotNull Reader specificationReader)
       throws ParserException {
-    JSONObject specification = parseYaml(specificationReader);
-    return specification.toMap();
+    return parse(specificationReader, null);
   }
 
   private void validateAndSetDefaults(JSONObject specification,

@@ -14,18 +14,19 @@ import java.util.Map;
 public class JsonParser implements Parser {
   @Override
   public @NotNull Map<String, Object> parse(@NotNull Reader specificationReader,
-                                            @NotNull Reader schemaReader)
+                                            @Nullable Reader schemaReader)
       throws ParserException {
     JSONObject specification = parseJson(specificationReader);
-    validateAndSetDefaults(specification, schemaReader);
+    if (schemaReader != null) {
+      validateAndSetDefaults(specification, schemaReader);
+    }
     return specification.toMap();
   }
 
   @Override
   public @NotNull Map<String, Object> parse(@NotNull Reader specificationReader)
       throws ParserException {
-    JSONObject specification = parseJson(specificationReader);
-    return specification.toMap();
+    return parse(specificationReader, null);
   }
 
   private void validateAndSetDefaults(JSONObject specification,

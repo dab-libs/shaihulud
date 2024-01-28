@@ -5,6 +5,7 @@ import ru.dab.shaihulud.generator.TemplateBundle;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 
 public class FileTemplateBundle implements TemplateBundle {
   private final @NotNull File   root;
@@ -30,10 +31,9 @@ public class FileTemplateBundle implements TemplateBundle {
     validateFileExists(templateFile);
     validateFileUnderFoot(templateFile);
 
-    return new BufferedReader(
-        new InputStreamReader(
-            new FileInputStream(templateFile),
-            StandardCharsets.UTF_8));
+    return new BufferedReader(new InputStreamReader(
+        Files.newInputStream(templateFile.toPath()),
+        StandardCharsets.UTF_8));
   }
 
   private void validateFileExists(File templateFile) throws IOException {

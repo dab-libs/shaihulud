@@ -13,7 +13,6 @@ public class FileResultStore implements ResultStore {
   public FileResultStore(@NotNull File root) {
     this.root = root;
     multiWriter = new MultiWriter();
-    multiWriter.subscribe(this::switchTo);
   }
 
   @Override
@@ -39,7 +38,6 @@ public class FileResultStore implements ResultStore {
 
   @Override
   public void close() throws IOException {
-    multiWriter.unsubscribe(this::switchTo);
     multiWriter.flush();
     multiWriter.close();
   }

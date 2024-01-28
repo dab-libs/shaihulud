@@ -11,17 +11,17 @@ import ru.dab.shaihulud.generator.TemplateBundle;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.HashMap;
 import java.util.Map;
 
 public class MustacheGenerator implements Generator {
   private final TemplateBundle templateBundle;
-  private final ResultStore store;
+  private final ResultStore    resultStore;
 
-  public MustacheGenerator(
-      @NotNull TemplateBundle templateBundle,
-      @NotNull ResultStore store) {
+  public MustacheGenerator(@NotNull TemplateBundle templateBundle,
+                           @NotNull ResultStore resultStore) {
     this.templateBundle = templateBundle;
-    this.store = store;
+    this.resultStore = resultStore;
   }
 
   @Override
@@ -31,8 +31,16 @@ public class MustacheGenerator implements Generator {
     MustacheFactory mf = new DefaultMustacheFactory(
         new MustacheTemplateResolver(templateBundle));
     Mustache mustache = mf.compile(templateBundle.getMain());
-    Writer writer = store.getWriter();
+    Writer writer = resultStore.getWriter();
+    putExtensions(specification);
     mustache.execute(writer, specification);
     writer.flush();
+  }
+
+  private void putExtensions(@NotNull Map<String, Object> specification) {
+    Extension extension = new Extension(resultStore);
+    specification.put("$GEN$", new HashMap<String, Object>() {{
+      put("writeFile", extension.getWriteFileFunction());
+    }});
   }
 }
